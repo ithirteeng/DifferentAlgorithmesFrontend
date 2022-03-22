@@ -1,0 +1,49 @@
+body {
+    font-family: "Comic Sans MS", monospace;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.container {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sectionSetting {
+    display: flex;
+    border: 3px solid blue;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+
+}
+
+.table-container {
+    border: 2px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 60px;
+    margin-right: 30px;
+    width: 850px;
+    height: 850px;
+    min-width: 840px;
+    min-height: 840px;
+}
+
+.settings-container {
+    display: block;
+    justify-content: center;
+    margin-right: 60px;
+    margin-left: 30px;
+    border: 2px solid red;
+    width: 850px;
+    height: 850px;
+    min-width: 840px;
+    min-height: 840px;
+
+}

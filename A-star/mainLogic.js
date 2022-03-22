@@ -186,8 +186,6 @@ function buttonEventListener() {
 function pressOneCellEvent(event) {
     let row = +(event.target.dataset.row);
     let col = +(event.target.dataset.col);
-    let element = document.querySelector('td[data-row = "' + row + '"][data-col = "' + col + '"]');
-    console.log("(" + col + ";" + row + ")");
     if (lastButton !== "") {
         switch (lastButton) {
             case "Start":
@@ -490,19 +488,22 @@ async function drawPath() {
 }
 
 async function aStar() {
+    let flag = false
     openList.push(startCords);
     checkNeighbours(startCords)
     while (!breakFlag) {
         const min = getMinCell();
         checkNeighbours(min);
         if (openList.length <= 0) {
+            flag = true
             alert("No path found")
             break;
         }
         await new Promise(resolve => setTimeout(resolve, 10))
     }
-
-    await drawPath()
+    if (!flag) {
+        await drawPath()
+    }
     changeButtonsEnabling(false)
 
     openList.splice(0, openList.length);

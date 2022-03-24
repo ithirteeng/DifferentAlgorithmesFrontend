@@ -1,6 +1,6 @@
 import {createMaze} from "./createMaze.js";
 let music = document.createElement("audio");
-music.src = "./music/a-star-music.m4a"
+music.src = "music/a-star-music.m4a"
 music.autoplay = true;
 
 let matrixSize = 30

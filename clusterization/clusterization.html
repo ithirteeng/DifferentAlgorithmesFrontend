@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <title>Stupid Triple</title>
     <link rel="stylesheet" href="src/css/clusterization.css">
-    <script src="src/scripts/config.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"defer></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"defer></script>
     <script src="src/scripts/k-means.js" defer></script>
 </head>
 <body>
 <header class="header">
     <div class="container">
         <div class="header__inner">
-            <a href="https://google.com" title="гугл">
+            <a href="../index.html" title="гугл">
                 <div class="header__logo"></div>
             </a>
             <nav class="nav">
@@ -26,48 +25,28 @@
         </div>
     </div>
 </header>
-<div class="intro">
+<div class="main">
     <div class="container">
-        <div class="intro-inner">
+        <div class="content">
             <div class="container-canvas">
-                <canvas id="c1" width="500" height="400">Ваш браузер не поддерживает canvas</canvas>
-                <input type="color" id="color">
+                <canvas id="canvas_1" width="500" height="400">Ваш браузер не поддерживает canvas</canvas>
 
             </div>
-            <div class="settings-container">
+            <div class="container-settings">
+
                 <button id="buttonStart" class="buttons">
                     Start
-                </button>
-                <button id="finishButton" class="buttons">
-                    Finish
-                </button>
-                <button id="mazeButton" class="buttons">
-                    Create maze
-                </button>
-                <br>
-                <button id="deleteWallButton" class="buttons">
-                    Delete wall
-                </button>
-                <button id="createWallButton" class="buttons">
-                    Create wall
                 </button>
                 <button id="clearButton" class="buttons">
                     Clear
                 </button>
-                <p id="inputRangeViewer">30</p>
-                <input id="matrixSize" type="range" min="5" max="69" value="30" class="range">
-                <p  id="randomRangeViewer">30</p>
-                <input id="random" type="range" min="0" max="100" value="30" class="range">
-                <button id="randomButton" class="updateButtonStyle">
-                    random
-                </button>
-                <button id="beginButton" class="beginButtonStyle">
-                    Begin
+                <input type="color" id="color">
+                <p id="clusterCounter">2</p>
+                <input id="clustersNumber" type="range" min="1" max="20" value="2" class="range">
+
                 </button>
             </div>
-
         </div>
-
     </div>
 </div>
 

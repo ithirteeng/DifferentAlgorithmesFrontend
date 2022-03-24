@@ -1,4 +1,4 @@
-const canvas = document.getElementById("c1");
+const canvas = document.getElementById("canvas_1");
 const ctx = canvas.getContext('2d');
 var myColor = 'red';
 document.getElementById('color').oninput = function (){

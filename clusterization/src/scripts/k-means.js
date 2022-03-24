@@ -27,7 +27,7 @@ function putPointByClick(event, canvas) {
 }
 
 
-const canvas = document.querySelector("#c1")
+const canvas = document.querySelector("#canvas_1")
 const ctx = canvas.getContext('2d');
 let myColor = 'blue';
 document.getElementById('color').oninput = function () {

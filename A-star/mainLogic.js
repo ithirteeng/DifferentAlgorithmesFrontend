@@ -1,9 +1,7 @@
 import {createMaze} from "./createMaze.js";
 alert("Настройте громкость звука")
-let music = document.createElement("audio");
-music.src = "music/a-star-music.m4a"
-music.autoplay = true;
-console.log(music)
+playMusic()
+
 let matrixSize = 30
 let matrix = document.getElementById("matrix")
 let cords = new Array(matrixSize)
@@ -17,6 +15,12 @@ let aStarMatrix = new Array(matrixSize)
 let isStartButtonPressed = false;
 let isFinisButtonPressed = false;
 let lastButton = "";
+
+function playMusic() {
+    let music = document.createElement("audio");
+    music.src = "music/a-star-music.m4a"
+    music.autoplay = true;
+}
 
 class Cell {
     constructor(x, y) {

@@ -1,4 +1,5 @@
 import {createMaze} from "./createMaze.js";
+alert("Настройте громкость звука")
 let music = document.createElement("audio");
 music.src = "music/a-star-music.m4a"
 music.autoplay = true;

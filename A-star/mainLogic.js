@@ -2,7 +2,7 @@ import {createMaze} from "./createMaze.js";
 let music = document.createElement("audio");
 music.src = "./music/a-star-music.m4a"
 music.autoplay = true;
-
+console.log(music)
 let matrixSize = 30
 let matrix = document.getElementById("matrix")
 let cords = new Array(matrixSize)

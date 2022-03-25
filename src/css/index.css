@@ -4,7 +4,7 @@ body {
     font-size: 20px;
     color: white;
     margin: 0;
-    background: black no-repeat center/100% fixed url("../img/bg-image.jpgУБЕРИЭТУНАДПИСЬ");
+    background: black no-repeat center/100% fixed url("../img/bg-image.jpg");
     background--size: cover;
     height: 100%;
     line-height: 1.6;

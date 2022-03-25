@@ -1,7 +1,10 @@
 body {
+    font-family: "Comic Sans MS", monospace;
+    font-weight: bold;
+    font-size: 20px;
     margin: 0;
     color: white;
-    background: black no-repeat center/100% fixed url("../../../src/img/bg-image.jpgУБЕРИЭТУДИЧЬ");
+    background: black no-repeat center/100% fixed url("../../../src/img/bg-image.jpg");
     background--size: cover;
     height: 100%;
     line-height: 1.6;
@@ -125,7 +128,7 @@ body {
     height: 400px;
     border: 3px solid green;
     margin: 3px;
-    background: no-repeat gray;
+    background: no-repeat aliceblue;
 }
 
 .container-settings {

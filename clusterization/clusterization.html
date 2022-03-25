@@ -34,15 +34,15 @@
             </div>
             <div class="container-settings">
 
-                <button id="buttonStart" class="buttons">
+                <button id="buttonStart" class="buttons" onclick="startAlgo()">
                     Start
                 </button>
-                <button id="clearButton" class="buttons">
+                <button id="clearButton" class="buttons" onclick="clearCanvas()">
                     Clear
                 </button>
                 <input type="color" id="color">
-                <p id="clusterCounter">2</p>
-                <input id="clustersNumber" type="range" min="1" max="20" value="2" class="range">
+                <input type="text" id="clusterCounter" value="2">
+                <input id="clustersNumber" type="range" min="1" max="20" value="2" class="range" oninput="inputRange()">
 
                 </button>
             </div>

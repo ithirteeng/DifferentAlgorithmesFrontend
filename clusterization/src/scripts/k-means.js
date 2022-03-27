@@ -180,6 +180,16 @@ canvas.addEventListener('mousedown', function (event) {
     }
 })
 
+let containerCanvas = document.getElementById("container-canvas")
+
+
+window.addEventListener('resize', resizeCanvas, false);
+function resizeCanvas (){
+    canvas.width = containerCanvas.offsetWidth
+    canvas.height = containerCanvas.offsetHeight
+}
+
+resizeCanvas()
 const canvas_width = ctx.canvas.width;
 const canvas_height = ctx.canvas.height;
 let dataArray = [];

@@ -92,8 +92,11 @@ function drawTrianglePoint(point, color) {
 
 function drawCirclePoint(point, color) {
     ctx.beginPath();
+    ctx.strokeStyle = myColor;
+    ctx.lineWidth = 8;
     ctx.fillStyle = color;
     ctx.arc(point.x + 3, point.y + 4, 10, 0, 2 * Math.PI);
+    ctx.stroke();
     ctx.fill()
     //
     ctx.fillStyle = 'black';
@@ -110,7 +113,7 @@ function computeSquareDistance(point1, point2) {
 function putPointByClick(event) {
     let x = event.offsetX;
     let y = event.offsetY;
-    drawCirclePoint({x, y}, myColor);
+    drawCirclePoint({x, y}, 'white');
     return {x, y, minDistance: 99999999, cluster: -1}
 }
 
@@ -139,6 +142,10 @@ function inputRange() {
 function clearCanvas() {
     // Just clears Canvas. DO NOT USE OUTSIDE CORRECT FUNCTIONS!
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+function resizeCanvas (){
+    canvas.width = containerCanvas.offsetWidth
+    canvas.height = containerCanvas.offsetHeight
 }
 
 function startAlgorithm() {
@@ -184,10 +191,6 @@ let containerCanvas = document.getElementById("container-canvas")
 
 
 window.addEventListener('resize', resizeCanvas, false);
-function resizeCanvas (){
-    canvas.width = containerCanvas.offsetWidth
-    canvas.height = containerCanvas.offsetHeight
-}
 
 resizeCanvas()
 const canvas_width = ctx.canvas.width;

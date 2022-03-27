@@ -31,6 +31,8 @@ body {
     margin-right: 30px;
     width: 850px;
     height: 850px;
+    min-height: 840px;
+    min-width: 840px;
 }
 
 .settings-container {
@@ -41,6 +43,8 @@ body {
     border: 2px solid red;
     width: 850px;
     height: 850px;
+    min-height: 840px;
+    min-width: 840px;
 }
 
 button:disabled {

@@ -46,6 +46,8 @@ button:hover {
     margin-right: 30px;
     width: 650px;
     height: 650px;
+    min-width: 640px;
+    min-height: 640px;
 }
 
 .settings-container {

@@ -4,6 +4,8 @@ export let cords = [];
 
 createMatrix(matrixSize)
 clearMatrix();
+
+
 function clearMatrix() {
     document.getElementById("clearButton").addEventListener("mousedown", function () {
         for (let i = 0; i < matrixSize; i++) {

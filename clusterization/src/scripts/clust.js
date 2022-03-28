@@ -25,10 +25,10 @@ class KMeans {
             let centroid = {
                 x: Math.round((canvas_width - 40) * Math.random() + 1),
                 y: Math.round((canvas_height - 40) * Math.random() + 1),
-                color: colors[i],
+                color: colorsKMeans[i],
                 pointsAmount: 0,
             };
-            drawTrianglePoint(centroid, colors[i]);
+            drawTrianglePoint(centroid, colorsKMeans[i]);
             this.centroids.push(centroid);
         }
         this.change_points_cluster();
@@ -79,6 +79,8 @@ class KMeans {
 
 }
 
+
+
 function drawTrianglePoint(point, color) {
     ctx.beginPath();
     ctx.fillStyle = color;
@@ -86,7 +88,7 @@ function drawTrianglePoint(point, color) {
     ctx.lineTo(point.x + 3, point.y - 7);
     ctx.lineTo(point.x + 13, point.y + 10);
     ctx.fill();
-    ctx.fillStyle = 'black'
+    ctx.fillStyle = 'black';
 
 }
 
@@ -119,7 +121,7 @@ function putPointByClick(event) {
 
 function restorePointsAfterRestart(pointsArray, color = 'black') {
     pointsArray.forEach(item => {
-        drawCirclePoint(item, colors[item.cluster]);
+        drawCirclePoint(item, colorsKMeans[item.cluster]);
     });
 }
 
@@ -130,7 +132,6 @@ function inputRangeByText() {
     clusters_number = parseInt(counter.value);
     console.log("Изменен range input через text");
 }
-
 function inputRange() {
     let rng = document.getElementById("clustersNumber");
     let counter = document.getElementById('clusterCounter');
@@ -138,24 +139,28 @@ function inputRange() {
     clusters_number = parseInt(rng.value);
     console.log("Изменен range input");
 }
+function inputColor() {
+    myColor = this.value;
+}
 
 function clearCanvas() {
-    // Just clears Canvas. DO NOT USE OUTSIDE CORRECT FUNCTIONS!
+    // Just clears Canvas. DO NOT USE OUTSIDE FUNCTIONS!
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
-function resizeCanvas (){
-    canvas.width = containerCanvas.offsetWidth
-    canvas.height = containerCanvas.offsetHeight
-    // console.log(`CANVAS PROPERTIES\n    Width: ${canvas.width}\n    Height: ${canvas.height}`)
+
+function resizeCanvas() {
+    canvas.width = containerCanvas.offsetWidth;
+    canvas.height = containerCanvas.offsetHeight;
+    console.log(`CANVAS PROPERTIES\n    Width: ${canvas.width}\n    Height: ${canvas.height}`)
 }
 
-function startAlgorithm() {
+function startKMeans() {
     if (dataArray.length === 0) {
         console.log("Точек нет!");
         alert("Поставьте точки!");
         return
     }
-    document.getElementById('buttonStart').textContent = "Restart"
+    document.getElementById('Start K-means').textContent = "Restart"
     if (is_started) {
         clearCanvas();
         restorePointsAfterRestart(dataArray, myColor);
@@ -178,27 +183,30 @@ function clearAll() {
 
 const canvas = document.querySelector("#canvas_1")
 const ctx = canvas.getContext('2d');
-document.getElementById('color').oninput = function () {
-    myColor = this.value;
-}
+// document.getElementById('color').oninput = function () {
+//     myColor = this.value;
+// }
 canvas.addEventListener('mousedown', function (event) {
     dataArray.push(putPointByClick(event, canvas))
     if (is_started) {
-        startAlgorithm();
+        startKMeans();
     }
 })
 
 let containerCanvas = document.getElementById("container-canvas")
-
-
-window.addEventListener('resize', resizeCanvas, false);
+window.addEventListener('resize', function (event) {
+    resizeCanvas();
+    clearAll();
+}, false);
 
 resizeCanvas()
 const canvas_width = ctx.canvas.width;
 const canvas_height = ctx.canvas.height;
+console.log(canvas_width, canvas_height)
 let dataArray = [];
 let clusters_number = 2;
 let is_started = 0;
 let myColor = 'black';
 let solve = new KMeans(clusters_number, dataArray);
-const colors = ['red', 'orange', 'yellow', 'green', 'lightskyblue', 'blue', 'blueviolet',]
+const colorsKMeans = ['#ff0000', 'orange', 'yellow', '#00ff00', 'lightskyblue', '#0000ff', 'blueviolet', '#6c9edc', '#9e16a2', '#9c83ff', '#1e62d1', '#deb3b5', '#d69e88', '#af8f47', '#843aaa', '#6a61d6', '#ac2de0', '#b475b7', '#624d4f', '#9eb838'];
+const colorsShiftMeans = ['#5c50f7', '#758d2f', '#3afba3', '#90e031', '#189c57', '#afc08d', '#7212d5', '#49b666', '#1131e5', '#8a9f9a', '#7ab94d', '#ce15d0', '#4777d9', '#1f5b10', '#c724a0', '#974f3a', '#9a2040', '#e13124', '#9ea22f', '#a26860']

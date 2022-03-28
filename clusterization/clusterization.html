@@ -5,6 +5,7 @@
     <title>Stupid Triple</title>
     <link rel="stylesheet" href="src/css/clusterization.css">
     <script src="src/scripts/k-means.js" defer></script>
+    <link rel="stylesheet" href="../src/bootstrap-grid.min.css">
 </head>
 <body>
 <header class="header">
@@ -14,23 +15,24 @@
                 <div class="header__logo"></div>
             </a>
             <nav class="nav">
-                <a class="nav__link" href="" title="муравьяшки" >Муравьиный алгоритм</a>
+                <a class="nav__link" href="" title="Здесь ничего нет">Муравьиный алгоритм</a>
                 <a class="nav__link" href="" title="хз чо это">Генетический алгоритм</a>
-                <a class="nav__link" href="" title="звездочка">Алгоритм А*</a>
-                <a class="nav__link" href="" title="точечки">Кластеризация</a>
-                <a class="nav__link" href="" title="робомозг">Нейронная сеть</a>
+                <a class="nav__link" href="../A-star/main.html" title="Алгоритм А*. Что ты ожидал тут увидеть?">Алгоритм А*</a>
+                <a class="nav__link" href="" title="Алгоритмы кластеризации">Кластеризация</a>
+                <a class="nav__link" href="" title="Пока что пусто?">Нейронная сеть</a>
             </nav>
         </div>
     </div>
 </header>
 <div class="main">
     <div class="container">
-        <div class="content">
-            <div class="container-canvas">
-                <canvas id="canvas_1" width="500" height="400">Ваш браузер не поддерживает canvas</canvas>
-
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="container-canvas" id="container-canvas">
+                    <canvas id="canvas_1">Ваш браузер не поддерживает canvas</canvas>
+                </div>
             </div>
-            <div class="container-settings">
+            <div class="col-lg-6 col-md-12">
 
                 <button id="buttonStart" class="buttons" onclick="startAlgorithm()">
                     Start

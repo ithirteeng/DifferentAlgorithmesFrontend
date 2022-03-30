@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/neuralStylesheet.css">
+	<title>Neural</title>
+</head>
+<body>
+<header>
+	<div class="container">
+		Neural:
+	</div>
+</header>
+<section class="sectionSetting">
+	<div class="table-container">
+		<table class="table-matrix">
+			<tbody id="matrix"></tbody>
+		</table>
+	</div>
+	<div class="settings-container">
+		<button id="clearButton">
+			Clear
+		</button>
+		<button id="startButton">
+			Start
+		</button>
+		<br>
+		<button id="trainButton" class="invisibleButtonCLass" disabled>
+			Train
+		</button>
+		<button id="nextButton" class="invisibleButtonCLass" disabled>
+			Next
+		</button>
+		<p id="updateNumber">0</p>
+		<br>
+		<p id="trainNumber"></p>
+	</div>
+</section>
+<script type="module" src="main.js"></script>
+<script type="module" src="drawMatrix.js"></script>
+</body>
+</html>

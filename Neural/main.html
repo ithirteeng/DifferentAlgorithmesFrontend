@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/neuralStylesheet.css">
+	<title>Neural</title>
+</head>
+<body>
+<!--<header class="header">-->
+<!--	<div class="container">-->
+<!--		<div class="header__inner">-->
+<!--			<a href="https://google.com" title="гугл">-->
+<!--				<div class="header__logo"></div>-->
+<!--			</a>-->
+<!--			<nav class="nav">-->
+<!--				<a class="nav__link" href="" title="муравьяшки" >Муравьиный алгоритм</a>-->
+<!--				<a class="nav__link" href="" title="хз чо это">Генетический алгоритм</a>-->
+<!--				<a class="nav__link" href="../A-star/main.html" title="звездочка">Алгоритм А*</a>-->
+<!--				<a class="nav__link" href="../clusterization/clusterization.html" title="точечки">Кластеризация</a>-->
+<!--				<a class="nav__link" href="main.html" title="робомозг">Нейронная сеть</a>-->
+<!--				<a class="nav__link" href="" title="Дерево">Дерево решений</a>-->
+
+<!--			</nav>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</header>-->
+<section class="sectionSetting">
+	<div class="table-container">
+		<table class="table-matrix">
+			<tbody id="matrix"></tbody>
+		</table>
+	</div>
+	<div class="settings-container">
+		<button id="clearButton">
+			Clear
+		</button>
+		<button id="startButton">
+			Start
+		</button>
+		<br>
+		<button id="trainButton" class="invisibleButtonCLass" disabled>
+			Train
+		</button>
+		<button id="nextButton" class="invisibleButtonCLass" disabled>
+			Next
+		</button>
+		<p id="updateNumber" class="neuronNumber">Your number is </p>
+		<br>
+		<p id="trainNumber"></p>
+	</div>
+</section>
+<script type="module" src="main.js"></script>
+<script type="module" src="drawMatrix.js"></script>
+</body>
+</html>

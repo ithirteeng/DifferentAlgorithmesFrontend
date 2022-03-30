@@ -21,6 +21,15 @@ button:hover {
     background-color: #c500d9;
 }
 
+.invisibleButtonCLass {
+    background-color: transparent;
+    border: none;
+    font-size: 0;
+}
+.invisibleButtonCLass:hover {
+    background-color: transparent;
+}
+
 .container {
     height: 50px;
     display: flex;

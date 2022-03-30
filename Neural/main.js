@@ -1,9 +1,11 @@
 import {createMatrix} from "./drawMatrix.js";
-import {correct} from "./weightsFile.js";
-import {correctBias} from "./biasFile.js";
+import {correct} from "./src/weightsFile.js";
+import {correctBias} from "./src/biasFile.js";
+import {trainData} from "./src/datasetFile.js";
 
 let expected = 0;
 let matrixSize = 5;
+let trainDataset = []
 
 let vectorSize = []
 let inputVectorSize = matrixSize * matrixSize;
@@ -21,53 +23,38 @@ let weights = []
 
 initialization();
 createMatrix(matrixSize)
-clearMatrix();
+clearMatrixButtonEvent();
 startButtonEvent();
-trainButtonEvent();
+
+//trainButtonEvent();
+//datasetButton();
+
 weights = correct;
 bias = correctBias;
 
-function clearMatrix() {
+
+//buttons events
+function clearMatrixButtonEvent() {
     document.getElementById("clearButton").addEventListener("mousedown", function () {
-        for (let i = 0; i < matrixSize; i++) {
-            let elements = document.querySelectorAll('td[data-row = "' + i + '"]');
-            for (let j = 0; j < matrixSize; j++) {
-                elements[j].classList.remove("wall");
-                cords[i][j] = 0;
-            }
-        }
+        clearMatrix();
     })
 }
 
 function startButtonEvent() {
     document.getElementById("startButton").addEventListener("click", function () {
-        inputLayerInit();
-        let number = forwardFeed();
-        document.getElementById("updateNumber").textContent = number.toString();
+        if (checkMatrix()) {
+            inputLayerInit();
+            let number = forwardFeed();
+            document.getElementById("updateNumber").textContent = number.toString();
+        } else {
+            alert("Please draw a number!")
+        }
+
     })
 }
 
-function trainButtonEvent() {
-    document.getElementById("trainButton").addEventListener("click", function () {
-        let mass = JSON.parse(stringA);
-        for (let k = 0; k < 10; k++) {
-            for (let j = 0; j < 100; j++) {
-                for (let i = 0; i < 100; i++) {
-                    let index = Math.floor(getRandom(0, 100));
-                    neuronValues[0] = mass[index][0];
-                    expected = mass[index][1];
-                    forwardFeed();
-                    learning();
-                }
-            }
-        }
-        console.log("that's all")
-    });
 
-
-}
-
-// activation
+// activation functions
 function relu(x) {
     if (x < 0) {
         return 0;
@@ -128,6 +115,7 @@ function sumVector(firstVector, secondVector, size) {
 }
 
 
+//initialization
 function initialization() {
     //sizes init
     vectorSize[0] = inputVectorSize;
@@ -183,7 +171,30 @@ function inputLayerInit() {
     }
 }
 
+function layerUpdating() {
+    let temp = []
+    let counter = 0;
+    for (let i = 0; i < matrixSize; i++) {
+        for (let j = 0; j < matrixSize; j++) {
+            temp[counter] = cords[i][j];
+            counter++;
+        }
+    }
+    return temp;
+}
+
+
 // helpful functions
+function checkMatrix() {
+    for (let i = 0; i < matrixSize; i++) {
+        for (let j = 0; j < matrixSize; j++) {
+            if (cords[i][j] != 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 function getRandom(min, max) {
     return Math.random() * (max - min) + min;
@@ -204,7 +215,17 @@ function getMaxIndex(vector) {
     return maxIndex;
 }
 
+function clearMatrix() {
+    for (let i = 0; i < matrixSize; i++) {
+        let elements = document.querySelectorAll('td[data-row = "' + i + '"]');
+        for (let j = 0; j < matrixSize; j++) {
+            elements[j].classList.remove("wall");
+            cords[i][j] = 0;
+        }
+    }
+}
 
+// main algorithms
 function forwardFeed() {
     for (let i = 1; i < layersCount; i++) {
         let temp = matrixMultiply(weights[i - 1], neuronValues[i - 1]);
@@ -213,9 +234,9 @@ function forwardFeed() {
             neuronValues[i][j] = relu(neuronValues[i][j])
         }
     }
-
     let prediction = getMaxIndex(neuronValues[layersCount - 1]);
     return prediction;
+    //console.log(prediction)
 }
 
 function backPropagation(expect) {
@@ -226,7 +247,7 @@ function backPropagation(expect) {
             neuronErrors[layersCount - 1][i] = (1.0 - neuronValues[layersCount - 1][i]) * derivative(neuronValues[layersCount - 1][i])
         }
     }
-    for (let i = layersCount - 2; i > 0 ; i--) {
+    for (let i = layersCount - 2; i > 0; i--) {
         neuronErrors[i] = transparentMatrixMultiply(weights[i], neuronErrors[i + 1]);
         for (let j = 0; j < vectorSize[i]; j++) {
             neuronErrors[i][j] *= derivative(neuronValues[i][j]);
@@ -250,15 +271,52 @@ function weightsUpdate(learningRate) {
 }
 
 function learning() {
-    //let expected = Number(document.getElementById("updateNumber").textContent)
     backPropagation(+expected);
-    weightsUpdate(0.01)
+    weightsUpdate(0.001)
 }
 
-// train dataset
-let stringA = '[[[0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0],"1"],[[0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],"1"],[[0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0],"1"],[[0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0],"1"],[[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0],"1"],[[1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0],"2"],[[0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0],"2"],[[0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0,1,1,1],"2"],[[0,1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,1,1,0],"2"],[[1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,1,1,0,0],"2"],[[1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0],"3"],[[1,1,1,0,0,1,0,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,1,1],"8"],[[1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,1,1,0,0],"3"],[[0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"3"],[[0,1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,1,1,0],"3"],[[0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1],"3"],[[0,0,1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,1,1],"3"],[[1,0,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0],"4"],[[1,0,0,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0],"4"],[[0,1,0,0,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0],"4"],[[0,1,0,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0],"4"],[[0,0,1,0,0,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1],"4"],[[0,0,1,0,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1],"4"],[[1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0],"5"],[[1,1,1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,1,1,0,0,0],"5"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"5"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,1,1,0,0],"5"],[[0,0,1,1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,1,1,0,0],"5"],[[0,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1],"5"],[[0,0,0,1,1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,0,0,1,1,0],"5"],[[1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0],"6"],[[1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0],"6"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"6"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"6"],[[0,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1],"6"],[[1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0],"7"],[[0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0],"7"],[[0,1,1,1,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,0,0,0,1,0],"7"],[[0,0,1,1,1,0,0,0,0,1,0,0,0,1,1,0,0,0,0,1,0,0,0,0,1],"7"],[[1,1,1,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,0,0,0,1,0,0],"7"],[[0,1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,1,1,0],"0"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"8"],[[0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1],"8"],[[0,0,1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,1,1],"0"],[[1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,1,1,0,0],"0"],[[1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0],"8"],[[0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0],"1"],[[0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0],"1"],[[0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0],"2"],[[0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"3"],[[0,1,0,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0],"4"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"5"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"6"],[[0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0],"7"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"9"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"8"],[[1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0],"9"],[[0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1],"9"],[[1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0],"3"],[[0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1],"3"],[[0,0,1,0,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1],"4"],[[1,0,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0],"4"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"5"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"6"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"8"],[[0,1,1,1,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,1,1,1],"0"],[[0,1,1,1,1,0,1,0,0,1,0,1,1,1,1,0,1,0,0,1,0,1,1,1,1],"8"],[[0,1,1,1,1,0,1,0,0,1,0,1,1,1,1,0,0,0,0,1,0,1,1,1,1],"9"],[[0,1,1,1,1,0,1,0,0,0,0,1,1,1,1,0,0,0,0,1,0,1,1,1,1],"5"],[[0,0,1,0,0,0,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0],"1"],[[0,1,1,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,0,0,0,1,0,0],"7"],[[0,1,1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,1,1,0],"2"],[[0,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,0,0,0],"9"],[[0,0,0,1,1,0,0,1,0,1,0,0,0,1,1,0,0,0,0,1,0,0,1,1,0],"9"],[[0,0,1,0,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,0,1,0,0],"0"],[[0,1,1,1,0,0,1,0,1,0,0,0,1,0,0,0,1,0,1,0,0,1,1,1,0],"8"],[[0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0],"2"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"6"],[[0,1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"5"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"9"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"8"],[[0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,0,1,1,1,0],"2"],[[0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0],"1"],[[0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0],"1"],[[0,1,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,1,0,0],"3"],[[0,1,0,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0],"4"],[[0,1,0,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0],"4"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,1,0],"9"],[[0,1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,1,1,0],"0"],[[0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0],"1"],[[0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0],"1"],[[1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0],"5"],[[1,1,1,0,0,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0],"6"],[[1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0],"8"],[[0,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0],"7"],[[0,1,1,1,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,0,0,0,1,0],"7"],[[1,1,1,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,1,1,1,0],"0"],[[1,1,1,1,0,1,0,0,1,0,1,1,1,1,0,1,0,0,1,0,1,1,1,1,0],"8"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,0,0],"9"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0],"8"],[[0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0],"9"]]';
+function trainButtonEvent() {
+    document.getElementById("trainButton").addEventListener("click", function () {
+        let mass = trainData
+        for (let k = 0; k < 50; k++) {
+            for (let j = 0; j < 160; j++) {
+                for (let i = 0; i < 160; i++) {
+                    let index = Math.floor(Math.random() * 160);
+                    neuronValues[0] = mass[index][0];
+                    expected = mass[index][1];
+                    //console.log("exp: " +  expected)
+                    forwardFeed();
+                    learning();
+                }
+            }
+        }
+        console.log("that's all")
+    });
 
 
+}
 
+let dataset
+function datasetButton() {
+    let i = 0;
+    let trainNum = 0;
+    document.getElementById("nextButton").addEventListener("click", function () {
+        i++;
+        trainNum = 0;
+        document.getElementById("updateNumber").textContent = i.toString();
+    });
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            trainNum++;
+            document.getElementById("trainNumber").textContent = trainNum.toString();
+            let temp = new Array(2);
+            temp[0] = layerUpdating();
+            temp[1] = i.toString();
+            trainDataset.push(temp);
+            clearMatrix();
+        }
+        dataset = JSON.stringify(trainDataset);
+    });
 
+}
 

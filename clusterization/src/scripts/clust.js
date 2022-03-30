@@ -1,11 +1,8 @@
 class Canvas {
     // Class for my own canvas field with methods and so on
     constructor(canvas_id, container_id) {
-        const canvas = document.getElementById(canvas_id);
-        this.canvas = canvas;
-
-        const context = this.canvas.getContext('2d');
-        this.context = context;
+        this.canvas = document.getElementById(canvas_id);
+        this.context = this.canvas.getContext('2d');
         this.width = this.context.canvas.width;
         this.height = this.context.canvas.height;
         this.container = document.getElementById(container_id);
@@ -25,6 +22,19 @@ class Canvas {
         console.log(`CANVAS PROPERTIES\n    Width: ${canvas.width}\n    Height: ${canvas.height}`)
     }
 
+    drawCirclePoint(point, color, map) {
+        console.log(map);
+        let ctx = map.context;
+        ctx.beginPath();
+        ctx.strokeStyle = myColor;
+        ctx.lineWidth = 8;
+        ctx.fillStyle = color;
+        let radius = 10;
+        ctx.arc(point.x + 3, point.y + 4, radius, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.fill();
+        ctx.fillStyle = 'black';
+    }
     drawCirclePoint(point, color) {
         let ctx = this.context;
         ctx.beginPath();
@@ -190,7 +200,8 @@ class AGNES {
         this.dist = distMethod;
         this.initialize_clusters();
         this.clustering();
-        this.drawPoints(canvas.drawCirclePoint);
+        console.log(canvas.drawCirclePoint);
+        this.drawPoints(k_means_is_started? canvas.drawRightHalfCirclePoint.bind(canvas) : canvas.drawCirclePoint.bind(canvas));
     }
 
     initialize_clusters() {
@@ -242,18 +253,21 @@ class AGNES {
     }
 
     drawPoints(drawPointFunction) {
+        console.log(this.centroids);
         this.centroids.forEach(function (item, index) {
+            console.log(this.width);
             let centroid = {x: 0, y: 0, pointsNumber: 0, color: colorsShiftMeans[index]}
             item.forEach(point => {
-                drawPointFunction(point, centroid.color);
+                console.log("Ширина равна = " + this.width);
+                drawPointFunction(point, centroid.color, this);
                 centroid.x += point.x;
                 centroid.y += point.y;
                 centroid.pointsNumber++;
-            })
+            }, this);
             centroid.x /= centroid.pointsNumber;
             centroid.y /= centroid.pointsNumber;
-            drawPointFunction(centroid, centroid.color);
-        })
+            drawPointFunction(centroid, centroid.color, this);
+        }, canvas);
     }
 
 

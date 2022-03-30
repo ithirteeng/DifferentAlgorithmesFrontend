@@ -277,13 +277,13 @@ function weightsUpdate(learningRate) {
 
 function learning() {
     backPropagation(+expected);
-    weightsUpdate(0.001)
+    weightsUpdate(0.003)
 }
 
 function trainButtonEvent() {
     document.getElementById("trainButton").addEventListener("click", function () {
         let mass = trainData
-        for (let k = 0; k < 50; k++) {
+        for (let k = 0; k < 30; k++) {
             for (let j = 0; j < 160; j++) {
                 for (let i = 0; i < 160; i++) {
                     let index = Math.floor(Math.random() * 160);

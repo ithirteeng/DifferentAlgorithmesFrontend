@@ -45,7 +45,12 @@ function startButtonEvent() {
         if (checkMatrix()) {
             inputLayerInit();
             let number = forwardFeed();
-            document.getElementById("updateNumber").textContent = number.toString();
+            let string = document.getElementById("updateNumber").textContent;
+            if (string[string.length - 1] >= '0' && string[string.length - 1] <= '9') {
+                document.getElementById("updateNumber").textContent = string.substring(0, string.length - 1) + number.toString();
+            } else {
+                document.getElementById("updateNumber").textContent += number.toString();
+            }
         } else {
             alert("Please draw a number!")
         }

@@ -193,7 +193,7 @@ function layerUpdating() {
 function checkMatrix() {
     for (let i = 0; i < matrixSize; i++) {
         for (let j = 0; j < matrixSize; j++) {
-            if (cords[i][j] != 0) {
+            if (cords[i][j] !== 0) {
                 return true;
             }
         }

@@ -146,6 +146,7 @@ function clearCanvas() {
 function resizeCanvas (){
     canvas.width = containerCanvas.offsetWidth
     canvas.height = containerCanvas.offsetHeight
+    // console.log(`CANVAS PROPERTIES\n    Width: ${canvas.width}\n    Height: ${canvas.height}`)
 }
 
 function startAlgorithm() {

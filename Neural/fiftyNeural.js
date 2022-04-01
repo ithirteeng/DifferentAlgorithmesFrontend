@@ -1,6 +1,6 @@
 import {createMatrix} from "./drawMatrix.js";
 import {correctFiftyBias} from "./src/fiftyBiasFile.js";
-import {weigthsBruh} from "./src/weigthsForFifty.js";
+import {weightsBruh} from "./src/weigthsForFifty.js";
 
 let expected = 0;
 let matrixSize = 50;
@@ -29,7 +29,7 @@ startButtonEvent();
 //datasetButton();
 
 bias = correctFiftyBias;
-weights = weigthsBruh;
+weights = weightsBruh;
 
 
 

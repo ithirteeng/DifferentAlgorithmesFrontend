@@ -1,4 +1,4 @@
-import {cords} from "./main.js";
+import {cords} from "./fiftyNeural.js";
 let matrix = document.getElementById("matrix");
 let isMouseDown = false;
 let mouseCounter = 0;
@@ -54,6 +54,7 @@ export function createMatrix(matrixSize) {
                         element.classList.remove("wall")
                         cords[Number(element.dataset.row)][Number(element.dataset.col)] = 0;
                     }
+                    document.getElementById("startButton").click()
                 }
             });
 

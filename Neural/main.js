@@ -1,6 +1,15 @@
 import {fiveMain} from "./five/fiveNeural.js";
 import {fiftyMain} from "./fifty/fiftyNeural.js";
 
+alert("Настройте громкость звука")
+playMusic()
+
+function playMusic() {
+    let music = document.createElement("audio");
+    music.src = "./src/music/neuralMusic.m4a"
+    music.autoplay = true;
+}
+
 let isFiftyNeural = false;
 switchButtonEvent();
 

@@ -55,6 +55,7 @@ export function createMatrix(matrixSize, cords) {
                     // cords[Number(element.dataset.row)][Number(element.dataset.col)] = 0;
                 }
                 isMouseDown = true;
+                document.getElementById("startButton").click()
             });
 
             element.addEventListener("mouseover", function() {

@@ -38,18 +38,16 @@ function clearMatrixButtonEvent() {
 
 function startButtonEvent() {
     document.getElementById("startButton").addEventListener("click", function () {
-        if (checkMatrix()) {
-            inputLayerInit();
-            let number = forwardFeed();
-            let string = document.getElementById("updateNumber").textContent;
-            if (string[string.length - 1] >= '0' && string[string.length - 1] <= '9') {
-                document.getElementById("updateNumber").textContent = string.substring(0, string.length - 1) + number.toString();
-            } else {
-                document.getElementById("updateNumber").textContent += number.toString();
-            }
+
+        inputLayerInit();
+        let number = forwardFeed();
+        let string = document.getElementById("updateNumber").textContent;
+        if (string[string.length - 1] >= '0' && string[string.length - 1] <= '9') {
+            document.getElementById("updateNumber").textContent = string.substring(0, string.length - 1) + number.toString();
         } else {
-            alert("Please draw a number!")
+            document.getElementById("updateNumber").textContent += number.toString();
         }
+
 
     })
 }
@@ -213,7 +211,10 @@ function getMaxIndex(vector) {
 
 function clearMatrix() {
     let string = document.getElementById("updateNumber").textContent;
-    string = string.slice(0, -1)
+    if (string[string.length - 1] >= '0' && string[string.length - 1] <= '9') {
+        string = string.slice(0, -1)
+    }
+
     document.getElementById("updateNumber").textContent = string
     for (let i = 0; i < matrixSize; i++) {
         let elements = document.querySelectorAll('td[data-row = "' + i + '"]');

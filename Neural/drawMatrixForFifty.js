@@ -37,17 +37,17 @@ export function createMatrix(matrixSize, cords) {
                 }
                 let startRow = Number(element.dataset.row)
                 let startCol = Number(element.dataset.col)
-                elemsToDraw = findRightElement(startRow, startCol);
+                elemsToDraw = findRightElement(startRow, startCol, matrixSize);
 
                 if (lastCellClass === "empty") {
-                    for (let k = 0; k < 4; k++) {
+                    for (let k = 0; k < elemsToDraw.length; k++) {
                         elemsToDraw[k].classList.add("wall")
                         cords[Number(elemsToDraw[k].dataset.row)][Number(elemsToDraw[k].dataset.col)] = 1;
                     }
                     // element.classList.add("wall")
                     // cords[Number(element.dataset.row)][Number(element.dataset.col)] = 1;
                 } else {
-                    for (let k = 0; k < 4; k++) {
+                    for (let k = 0; k < elemsToDraw.length; k++) {
                         elemsToDraw[k].classList.remove("wall")
                         cords[Number(elemsToDraw[k].dataset.row)][Number(elemsToDraw[k].dataset.col)] = 0;
                     }
@@ -62,16 +62,16 @@ export function createMatrix(matrixSize, cords) {
                     mouseCounter++;
                     let startRow = Number(element.dataset.row)
                     let startCol = Number(element.dataset.col)
-                    elemsToDraw = findRightElement(startRow, startCol);
+                    elemsToDraw = findRightElement(startRow, startCol, matrixSize);
                     if (lastCellClass === "empty") {
-                        for (let k = 0; k < 4; k++) {
+                        for (let k = 0; k < elemsToDraw.length; k++) {
                             elemsToDraw[k].classList.add("wall")
                             cords[Number(elemsToDraw[k].dataset.row)][Number(elemsToDraw[k].dataset.col)] = 1;
                         }
                         // element.classList.add("wall")
                         // cords[Number(element.dataset.row)][Number(element.dataset.col)] = 1;
                     } else {
-                        for (let k = 0; k < 4; k++) {
+                        for (let k = 0; k < elemsToDraw.length; k++) {
                             elemsToDraw[k].classList.remove("wall")
                             cords[Number(elemsToDraw[k].dataset.row)][Number(elemsToDraw[k].dataset.col)] = 0;
                         }
@@ -90,16 +90,40 @@ export function createMatrix(matrixSize, cords) {
     return cords;
 }
 
-function findRightElement(row, col) {
+function findRightElement(row, col, matrixSize) {
     let elementsRow = document.querySelectorAll('td[data-row = "' + row + '"]');
-    let elementsRowAbove = document.querySelectorAll('td[data-row = "' + (row + 1) + '"]');
     let elementsCol = document.querySelectorAll('td[data-col = "' + col + '"]');
 
     let data = []
-    data.push(elementsRow[col]);
-    data.push(elementsRow[col + 1]);
-    data.push(elementsCol[row + 1])
-    data.push(elementsRowAbove[col + 1]);
+    if (row + 1 === matrixSize && col + 1 !== matrixSize) {
+        let elementsRowAbove = document.querySelectorAll('td[data-row = "' + (row - 1) + '"]');
+
+        data.push(elementsRow[col]);
+        data.push(elementsRow[col + 1]);
+        data.push(elementsRowAbove[col]);
+        data.push(elementsRowAbove[col + 1])
+    } else if (col + 1 === matrixSize && row + 1 !== matrixSize) {
+        let elementsColLeft = document.querySelectorAll('td[data-col = "' + (col - 1) + '"]');
+
+        data.push(elementsRow[col]);
+        data.push(elementsCol[row + 1])
+        data.push(elementsColLeft[row]);
+        data.push(elementsColLeft[row + 1]);
+    } else if(row + 1 === matrixSize && col + 1 === matrixSize) {
+        let elementsRowAbove = document.querySelectorAll('td[data-row = "' + (row - 1) + '"]');
+
+        data.push(elementsRow[col]);
+        data.push(elementsRow[col - 1]);
+        data.push(elementsCol[row - 1]);
+        data.push(elementsRowAbove[col - 1]);
+
+    } else {
+        let elementsRowAbove = document.querySelectorAll('td[data-row = "' + (row + 1) + '"]');
+        data.push(elementsRow[col]);
+        data.push(elementsRow[col + 1]);
+        data.push(elementsCol[row + 1])
+        data.push(elementsRowAbove[col + 1]);
+    }
 
     return data;
 }

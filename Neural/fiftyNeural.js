@@ -234,8 +234,7 @@ function forwardFeed() {
             neuronValues[i][j] = sigmoid(neuronValues[i][j])
         }
     }
-    let prediction = getMaxIndex(neuronValues[layersCount - 1]);
-    return prediction;
+    return getMaxIndex(neuronValues[layersCount - 1]);
     //console.log(prediction)
 }
 

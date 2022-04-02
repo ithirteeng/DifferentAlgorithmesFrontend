@@ -1,17 +1,17 @@
-import {createMatrix} from "./drawMatrix.js";
+import {createMatrix} from "./drawMatrixForFifty.js";
 import {correctFiftyBias} from "./src/fiftyBiasFile.js";
 import {weightsBruh} from "./src/weigthsForFifty.js";
 
+
 let expected = 0;
 let matrixSize = 50;
-let trainDataset = []
 
 let vectorSize = []
 let inputVectorSize = matrixSize * matrixSize;
 let hiddenVectorSize = 150;
 let outputVectorSize = 10;
 let layersCount = 3;
-export let cords = [];
+let cords = [];
 
 let neuronValues = []
 let neuronErrors = []
@@ -21,16 +21,12 @@ let bias = []
 let weights = []
 
 initialization();
-createMatrix(matrixSize)
+cords = createMatrix(matrixSize, cords);
 clearMatrixButtonEvent();
 startButtonEvent();
 
-//trainButtonEvent();
-//datasetButton();
-
 bias = correctFiftyBias;
 weights = weightsBruh;
-
 
 
 //buttons events
@@ -216,7 +212,7 @@ function getMaxIndex(vector) {
 }
 
 function clearMatrix() {
-    let string  = document.getElementById("updateNumber").textContent;
+    let string = document.getElementById("updateNumber").textContent;
     string = string.slice(0, -1)
     document.getElementById("updateNumber").textContent = string
     for (let i = 0; i < matrixSize; i++) {
@@ -278,48 +274,5 @@ function learning() {
     weightsUpdate(0.003)
 }
 
-function trainButtonEvent() {
-    document.getElementById("trainButton").addEventListener("click", function () {
-        let mass = trainData
-        for (let k = 0; k < 30; k++) {
-            for (let j = 0; j < 160; j++) {
-                for (let i = 0; i < 160; i++) {
-                    let index = Math.floor(Math.random() * 160);
-                    neuronValues[0] = mass[index][0];
-                    expected = mass[index][1];
-                    //console.log("exp: " +  expected)
-                    forwardFeed();
-                    learning();
-                }
-            }
-        }
-        console.log("that's all")
-    });
 
-
-}
-
-let dataset
-function datasetButton() {
-    let i = 0;
-    let trainNum = 0;
-    document.getElementById("nextButton").addEventListener("click", function () {
-        i++;
-        trainNum = 0;
-        document.getElementById("updateNumber").textContent = i.toString();
-    });
-    document.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-            trainNum++;
-            document.getElementById("trainNumber").textContent = trainNum.toString();
-            let temp = new Array(2);
-            temp[0] = layerUpdating();
-            temp[1] = i.toString();
-            trainDataset.push(temp);
-            clearMatrix();
-        }
-        dataset = JSON.stringify(trainDataset);
-    });
-
-}
 

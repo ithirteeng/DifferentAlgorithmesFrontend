@@ -24,6 +24,7 @@ button:hover {
     background-color: transparent;
     border: none;
     font-size: 0;
+    cursor: none;
 }
 .invisibleButtonCLass:hover {
     background-color: transparent;

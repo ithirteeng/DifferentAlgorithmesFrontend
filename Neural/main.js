@@ -6,7 +6,7 @@ playMusic()
 
 function playMusic() {
     let music = document.createElement("audio");
-    music.src = "./src/music/neuralMusic.m4a"
+    music.src = "./src/music/neural2_2.m4a"
     music.autoplay = true;
 }
 

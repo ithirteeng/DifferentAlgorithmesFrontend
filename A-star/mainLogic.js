@@ -15,6 +15,7 @@ let aStarMatrix = new Array(matrixSize)
 let isStartButtonPressed = false;
 let isFinisButtonPressed = false;
 let lastButton = "";
+let metrics = "Euclidean";
 
 function playMusic() {
     let music = document.createElement("audio");
@@ -53,10 +54,11 @@ class Node {
 let startCords = new Cell(0, 0);
 let finishCords = new Cell(0, 0);
 
-rangeViewer()
-buttonEventListener()
-matrixCreation()
-makeRandomMatrix()
+rangeViewer();
+metricsDetermination();
+buttonEventListener();
+matrixCreation();
+makeRandomMatrix();
 await startFindingPath();
 
 // Внешний вид
@@ -294,6 +296,17 @@ function changeButtonsEnabling(mode) {
     }
 }
 
+function metricsDetermination() {
+    let radios = document.querySelectorAll('input[type=radio]');
+    for (let i = 0; i < radios.length; i++) {
+        radios[i].addEventListener("click", function() {
+            if (radios[i].checked) {
+                metrics = radios[i].value;
+                console.log(metrics);
+            }
+        })
+    }
+}
 
 // Создание лабиринта
 function mazeCreation() {
@@ -340,15 +353,24 @@ function drawMaze() {
 }
 
 
+
 //Алгоритм
 let index = 0;
 let breakFlag = false;
 let openList = [];
 let closeList = [];
-let changeList = []
+let changeList = [];
 
 function getDistance(firstPosition, secondPosition) {
-    return Math.abs(firstPosition.x - secondPosition.x) + Math.abs(firstPosition.y - secondPosition.y);
+    let dist;
+    if (metrics == "Euclidean") {
+        dist = Math.sqrt(Math.pow(firstPosition.x - secondPosition.x, 2) + Math.pow(firstPosition.y - secondPosition.y, 2));
+    } else if (metrics == "Manhattan") {
+        dist = Math.abs(firstPosition.x - secondPosition.x) + Math.abs(firstPosition.y - secondPosition.y);
+    } else {
+        dist = Math.max(Math.abs(firstPosition.x - secondPosition.x), Math.abs(firstPosition.y - secondPosition.y));
+    }
+    return dist;
 }
 
 function isClosed(temp) {

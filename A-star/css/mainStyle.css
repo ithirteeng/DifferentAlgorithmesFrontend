@@ -47,6 +47,36 @@ body {
     min-width: 840px;
 }
 
+.sizeContainer {
+    padding-left: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+.rAndsCont {
+    font-size: 26px;
+    border: 1px solid black;
+    width: 50%;
+}
+
+.metricsCont {
+    padding-left: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border: 1px solid black;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    font-size: 26px;
+}
+.metricsCont p {
+    margin: 10px;
+}
+
+input[type=radio] {
+    margin-right: 10px;
+}
+
 button:disabled {
     cursor: pointer;
     margin: 20px;
@@ -58,9 +88,17 @@ button:disabled {
     border-radius: 10px;
 }
 
+.buttonsContainer {
+    margin-top: 30px;
+
+
+}
+
 .buttons {
     cursor: pointer;
-    margin: 20px;
+    margin-left: 30px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     height: 50px;
     width: 150px;
     font-family: "Comic Sans MS", monospace;
@@ -100,13 +138,16 @@ button:disabled {
 }
 
 .buttons:hover {
-    background: blueviolet;
+    background-color: #c500d9;
 }
 
 .range {
+    margin-left: 30px;
     display: block;
-    width: 400px;
+    width: 350px;
 }
+
+
 
 table {
     outline: 5px solid black;

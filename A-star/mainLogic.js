@@ -363,9 +363,9 @@ let changeList = [];
 
 function getDistance(firstPosition, secondPosition) {
     let dist;
-    if (metrics == "Euclidean") {
+    if (metrics === "Euclidean") {
         dist = Math.sqrt(Math.pow(firstPosition.x - secondPosition.x, 2) + Math.pow(firstPosition.y - secondPosition.y, 2));
-    } else if (metrics == "Manhattan") {
+    } else if (metrics === "Manhattan") {
         dist = Math.abs(firstPosition.x - secondPosition.x) + Math.abs(firstPosition.y - secondPosition.y);
     } else {
         dist = Math.max(Math.abs(firstPosition.x - secondPosition.x), Math.abs(firstPosition.y - secondPosition.y));

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stupid Triple</title>
+    <script src="src/scripts/main.js" defer></script>
+    <link rel="stylesheet" href="../src/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../src/css/index.css">
+    <link rel="stylesheet" href="src/css/clust.css">
+
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <a href="../index.html" title="гугл">
+                <div class="header__logo"></div>
+            </a>
+            <nav class="nav">
+                <a class="nav__link" href="" title="">Муравьиный алгоритм</a>
+                <a class="nav__link" href="" title="">Генетический алгоритм</a>
+                <a class="nav__link" href="../A-star/main.html" title="Алгоритм А*. Что ты ожидал тут увидеть?">Алгоритм А*</a>
+                <a class="nav__link" href="" title="Алгоритмы кластеризации">Кластеризация</a>
+                <a class="nav__link" href="../Neural/main.html" title="Пока что пусто?">Нейронная сеть</a>
+            </nav>
+        </div>
+    </div>
+</header>
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="container-canvas" id="container-canvas">
+                    <canvas id="canvas_1">Ваш браузер не поддерживает canvas</canvas>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="container-settings">
+                    <button id="Start K-means" class="buttons" onclick="startKMeans()">
+                        Start
+                    </button>
+                    <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
+                    <input type="color" id="color" oninput="inputColor()">
+                    <input type="text" id="clusterCounter" value="2" oninput="inputRangeByText()">
+                    <input id="clustersNumber" type="range" min="1" max="20" value="2" class="range"
+                           oninput="inputRange()">
+                    <br>
+                    <button id="Start AGNES" class="buttons" onclick="startAGNES()">Start</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

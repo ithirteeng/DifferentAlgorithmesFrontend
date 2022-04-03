@@ -60,7 +60,7 @@ body {
 }
 
 .metricsCont {
-    padding-left: 30px;
+    padding-left: 10px;
     padding-top: 30px;
     padding-bottom: 30px;
     border: 1px solid black;
@@ -71,6 +71,10 @@ body {
 }
 .metricsCont p {
     margin: 10px;
+}
+
+.metricsCont input[type=range] {
+    width: 90%;
 }
 
 input[type=radio] {

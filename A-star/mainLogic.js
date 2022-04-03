@@ -16,6 +16,7 @@ let isStartButtonPressed = false;
 let isFinisButtonPressed = false;
 let lastButton = "";
 let metrics = "Euclidean";
+let delay = 30;
 
 function playMusic() {
     let music = document.createElement("audio");
@@ -69,6 +70,17 @@ function rangeViewer() {
     document.getElementById("random").addEventListener("input", function () {
         document.getElementById("randomRangeViewer").textContent = document.getElementById("random").value;
     });
+    document.getElementById("speedRange").addEventListener("input", function() {
+        let string = document.getElementById("speedViewer").textContent;
+        let counter = string.length - 1;
+        while (string[counter] !== " ") {
+            string = string.slice(0, -1);
+            counter--;
+        }
+        delay = 10 * (10 - Number(document.getElementById("speedRange").value));
+        string += document.getElementById("speedRange").value.toString();
+        document.getElementById("speedViewer").textContent = string;
+    })
 }
 
 
@@ -119,8 +131,7 @@ function createTableMatrix() {
             element.name = "cell";
             element.dataset.row = i.toString();
             element.dataset.col = j.toString();
-            element.addEventListener("click", pressOneCellEvent);
-
+            element.addEventListener("mousedown", pressOneCellEvent);
             row.append(element);
 
         }
@@ -292,7 +303,9 @@ function changeButtonsEnabling(mode) {
     }
     let ranges = document.querySelectorAll("input")
     for (let i = 0; i < ranges.length; i++) {
-        ranges[i].disabled = !!mode;
+        if (ranges[i].id != "speedRange") {
+            ranges[i].disabled = !!mode;
+        }
     }
 }
 
@@ -510,7 +523,7 @@ async function drawPath() {
         y = aStarMatrix[y][temp].parentY;
         cell = document.querySelector('td[data-col = "' + x + '"][data-row = "' + y + '"]');
         cell.classList.add("path");
-        await new Promise(resolve => setTimeout(resolve, 30))
+        await new Promise(resolve => setTimeout(resolve, delay))
     }
     cell.classList.remove("path");
     cell.classList.remove("currentCell");
@@ -529,7 +542,7 @@ async function aStar() {
             alert("No path found")
             break;
         }
-        await new Promise(resolve => setTimeout(resolve, 10))
+        await new Promise(resolve => setTimeout(resolve, delay / 3))
     }
     if (!flag) {
         await drawPath()

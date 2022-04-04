@@ -16,6 +16,9 @@ let isStartButtonPressed = false;
 let isFinisButtonPressed = false;
 let lastButton = "";
 let metrics = "Euclidean";
+
+let isMouseDown = false;
+
 let delay = 30;
 
 function playMusic() {
@@ -30,6 +33,10 @@ class Cell {
         this.y = y;
     }
 }
+
+document.querySelector('table').addEventListener("mouseup", function () {
+    isMouseDown = false;
+})
 
 class Node {
     constructor(value, f, g, h, parentX, parentY) {
@@ -131,7 +138,19 @@ function createTableMatrix() {
             element.name = "cell";
             element.dataset.row = i.toString();
             element.dataset.col = j.toString();
+
+            element.addEventListener("mousedown", function () {
+                isMouseDown = true;
+                pressOneCellEvent(element);
+            });
+            element.addEventListener("mouseover", function () {
+                if(isMouseDown) {
+                    pressOneCellEvent(element);
+                }
+            })
+
             element.addEventListener("mousedown", pressOneCellEvent);
+
             row.append(element);
 
         }
@@ -204,19 +223,19 @@ function buttonEventListener() {
     });
 }
 
-function pressOneCellEvent(event) {
-    let row = +(event.target.dataset.row);
-    let col = +(event.target.dataset.col);
+function pressOneCellEvent(target) {
+    let row = +(target.dataset.row);
+    let col = +(target.dataset.col);
     if (lastButton !== "") {
         switch (lastButton) {
             case "Start":
-                event.target.classList.remove("currentCell")
-                event.target.classList.remove("path")
+                target.classList.remove("currentCell")
+                target.classList.remove("path")
                 if (!isStartButtonPressed) {
                     if (cords[row][col] !== 1 && cords[row][col] !== 3) {
                         isStartButtonPressed = true;
 
-                        event.target.classList.add("start");
+                        target.classList.add("start");
                         cords[row][col] = 2;
                         startCords.x = col;
                         startCords.y = row;
@@ -231,7 +250,7 @@ function pressOneCellEvent(event) {
                         lastCell[0].classList.remove("start");
                         cords[lastY][lastX] = 0
 
-                        event.target.classList.add("start");
+                        target.classList.add("start");
                         cords[row][col] = 2;
                         startCords.x = col;
                         startCords.y = row;
@@ -242,12 +261,12 @@ function pressOneCellEvent(event) {
                 }
                 break;
             case "Finish":
-                event.target.classList.remove("currentCell")
-                event.target.classList.remove("path")
+                target.classList.remove("currentCell")
+                target.classList.remove("path")
                 if (!isFinisButtonPressed) {
                     if (cords[row][col] !== 1 && cords[row][col] !== 2) {
                         isFinisButtonPressed = true;
-                        event.target.classList.add("finish");
+                        target.classList.add("finish");
                         cords[row][col] = 3;
                         finishCords.x = col;
                         finishCords.y = row;
@@ -262,7 +281,7 @@ function pressOneCellEvent(event) {
                         lastCell[0].classList.remove("finish");
                         cords[lastY][lastX] = 0
                         aStarMatrix[lastY][lastX].value = 0;
-                        event.target.classList.add("finish");
+                        target.classList.add("finish");
                         cords[row][col] = 3;
                         finishCords.x = col;
                         finishCords.y = row;
@@ -273,7 +292,7 @@ function pressOneCellEvent(event) {
                 break;
             case "Delete wall":
                 if (cords[row][col] === 1 || cords[row][col] === 0) {
-                    event.target.classList.remove("wall");
+                    target.classList.remove("wall");
                     cords[row][col] = 0;
                     aStarMatrix[row][col].value = 0;
                 } else {
@@ -281,8 +300,8 @@ function pressOneCellEvent(event) {
                 }
                 break;
             case "Create wall":
-                event.target.classList.remove("currentCell")
-                event.target.classList.remove("path")
+                target.classList.remove("currentCell")
+                target.classList.remove("path")
                 if (cords[row][col] === 0 || cords[row][col] === 1) {
                     event.target.classList.add("wall");
                     cords[row][col] = 1;

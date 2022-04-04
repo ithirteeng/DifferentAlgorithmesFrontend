@@ -15,6 +15,11 @@ let aStarMatrix = new Array(matrixSize)
 let isStartButtonPressed = false;
 let isFinisButtonPressed = false;
 let lastButton = "";
+let metrics = "Euclidean";
+
+let isMouseDown = false;
+
+let delay = 30;
 
 function playMusic() {
     let music = document.createElement("audio");
@@ -28,6 +33,10 @@ class Cell {
         this.y = y;
     }
 }
+
+document.querySelector('table').addEventListener("mouseup", function () {
+    isMouseDown = false;
+})
 
 class Node {
     constructor(value, f, g, h, parentX, parentY) {
@@ -53,10 +62,11 @@ class Node {
 let startCords = new Cell(0, 0);
 let finishCords = new Cell(0, 0);
 
-rangeViewer()
-buttonEventListener()
-matrixCreation()
-makeRandomMatrix()
+rangeViewer();
+metricsDetermination();
+buttonEventListener();
+matrixCreation();
+makeRandomMatrix();
 await startFindingPath();
 
 // Внешний вид
@@ -67,6 +77,17 @@ function rangeViewer() {
     document.getElementById("random").addEventListener("input", function () {
         document.getElementById("randomRangeViewer").textContent = document.getElementById("random").value;
     });
+    document.getElementById("speedRange").addEventListener("input", function() {
+        let string = document.getElementById("speedViewer").textContent;
+        let counter = string.length - 1;
+        while (string[counter] !== " ") {
+            string = string.slice(0, -1);
+            counter--;
+        }
+        delay = 10 * (10 - Number(document.getElementById("speedRange").value));
+        string += document.getElementById("speedRange").value.toString();
+        document.getElementById("speedViewer").textContent = string;
+    })
 }
 
 
@@ -117,7 +138,18 @@ function createTableMatrix() {
             element.name = "cell";
             element.dataset.row = i.toString();
             element.dataset.col = j.toString();
-            element.addEventListener("click", pressOneCellEvent);
+
+            element.addEventListener("mousedown", function () {
+                isMouseDown = true;
+                pressOneCellEvent(element);
+            });
+            element.addEventListener("mouseover", function () {
+                if(isMouseDown) {
+                    pressOneCellEvent(element);
+                }
+            })
+
+            element.addEventListener("mousedown", pressOneCellEvent);
 
             row.append(element);
 
@@ -191,19 +223,19 @@ function buttonEventListener() {
     });
 }
 
-function pressOneCellEvent(event) {
-    let row = +(event.target.dataset.row);
-    let col = +(event.target.dataset.col);
+function pressOneCellEvent(target) {
+    let row = +(target.dataset.row);
+    let col = +(target.dataset.col);
     if (lastButton !== "") {
         switch (lastButton) {
             case "Start":
-                event.target.classList.remove("currentCell")
-                event.target.classList.remove("path")
+                target.classList.remove("currentCell")
+                target.classList.remove("path")
                 if (!isStartButtonPressed) {
                     if (cords[row][col] !== 1 && cords[row][col] !== 3) {
                         isStartButtonPressed = true;
 
-                        event.target.classList.add("start");
+                        target.classList.add("start");
                         cords[row][col] = 2;
                         startCords.x = col;
                         startCords.y = row;
@@ -218,7 +250,7 @@ function pressOneCellEvent(event) {
                         lastCell[0].classList.remove("start");
                         cords[lastY][lastX] = 0
 
-                        event.target.classList.add("start");
+                        target.classList.add("start");
                         cords[row][col] = 2;
                         startCords.x = col;
                         startCords.y = row;
@@ -229,12 +261,12 @@ function pressOneCellEvent(event) {
                 }
                 break;
             case "Finish":
-                event.target.classList.remove("currentCell")
-                event.target.classList.remove("path")
+                target.classList.remove("currentCell")
+                target.classList.remove("path")
                 if (!isFinisButtonPressed) {
                     if (cords[row][col] !== 1 && cords[row][col] !== 2) {
                         isFinisButtonPressed = true;
-                        event.target.classList.add("finish");
+                        target.classList.add("finish");
                         cords[row][col] = 3;
                         finishCords.x = col;
                         finishCords.y = row;
@@ -249,7 +281,7 @@ function pressOneCellEvent(event) {
                         lastCell[0].classList.remove("finish");
                         cords[lastY][lastX] = 0
                         aStarMatrix[lastY][lastX].value = 0;
-                        event.target.classList.add("finish");
+                        target.classList.add("finish");
                         cords[row][col] = 3;
                         finishCords.x = col;
                         finishCords.y = row;
@@ -260,7 +292,7 @@ function pressOneCellEvent(event) {
                 break;
             case "Delete wall":
                 if (cords[row][col] === 1 || cords[row][col] === 0) {
-                    event.target.classList.remove("wall");
+                    target.classList.remove("wall");
                     cords[row][col] = 0;
                     aStarMatrix[row][col].value = 0;
                 } else {
@@ -268,8 +300,8 @@ function pressOneCellEvent(event) {
                 }
                 break;
             case "Create wall":
-                event.target.classList.remove("currentCell")
-                event.target.classList.remove("path")
+                target.classList.remove("currentCell")
+                target.classList.remove("path")
                 if (cords[row][col] === 0 || cords[row][col] === 1) {
                     event.target.classList.add("wall");
                     cords[row][col] = 1;
@@ -290,10 +322,23 @@ function changeButtonsEnabling(mode) {
     }
     let ranges = document.querySelectorAll("input")
     for (let i = 0; i < ranges.length; i++) {
-        ranges[i].disabled = !!mode;
+        if (ranges[i].id != "speedRange") {
+            ranges[i].disabled = !!mode;
+        }
     }
 }
 
+function metricsDetermination() {
+    let radios = document.querySelectorAll('input[type=radio]');
+    for (let i = 0; i < radios.length; i++) {
+        radios[i].addEventListener("click", function() {
+            if (radios[i].checked) {
+                metrics = radios[i].value;
+                console.log(metrics);
+            }
+        })
+    }
+}
 
 // Создание лабиринта
 function mazeCreation() {
@@ -340,15 +385,24 @@ function drawMaze() {
 }
 
 
+
 //Алгоритм
 let index = 0;
 let breakFlag = false;
 let openList = [];
 let closeList = [];
-let changeList = []
+let changeList = [];
 
 function getDistance(firstPosition, secondPosition) {
-    return Math.abs(firstPosition.x - secondPosition.x) + Math.abs(firstPosition.y - secondPosition.y);
+    let dist;
+    if (metrics === "Euclidean") {
+        dist = Math.sqrt(Math.pow(firstPosition.x - secondPosition.x, 2) + Math.pow(firstPosition.y - secondPosition.y, 2));
+    } else if (metrics === "Manhattan") {
+        dist = Math.abs(firstPosition.x - secondPosition.x) + Math.abs(firstPosition.y - secondPosition.y);
+    } else {
+        dist = Math.max(Math.abs(firstPosition.x - secondPosition.x), Math.abs(firstPosition.y - secondPosition.y));
+    }
+    return dist;
 }
 
 function isClosed(temp) {
@@ -488,7 +542,7 @@ async function drawPath() {
         y = aStarMatrix[y][temp].parentY;
         cell = document.querySelector('td[data-col = "' + x + '"][data-row = "' + y + '"]');
         cell.classList.add("path");
-        await new Promise(resolve => setTimeout(resolve, 30))
+        await new Promise(resolve => setTimeout(resolve, delay))
     }
     cell.classList.remove("path");
     cell.classList.remove("currentCell");
@@ -507,7 +561,7 @@ async function aStar() {
             alert("No path found")
             break;
         }
-        await new Promise(resolve => setTimeout(resolve, 10))
+        await new Promise(resolve => setTimeout(resolve, delay / 3))
     }
     if (!flag) {
         await drawPath()

@@ -15,6 +15,8 @@ let aStarMatrix = new Array(matrixSize)
 let isStartButtonPressed = false;
 let isFinisButtonPressed = false;
 let lastButton = "";
+let metrics = "Euclidean";
+let delay = 30;
 
 function playMusic() {
     let music = document.createElement("audio");
@@ -53,10 +55,11 @@ class Node {
 let startCords = new Cell(0, 0);
 let finishCords = new Cell(0, 0);
 
-rangeViewer()
-buttonEventListener()
-matrixCreation()
-makeRandomMatrix()
+rangeViewer();
+metricsDetermination();
+buttonEventListener();
+matrixCreation();
+makeRandomMatrix();
 await startFindingPath();
 
 // Внешний вид
@@ -67,6 +70,17 @@ function rangeViewer() {
     document.getElementById("random").addEventListener("input", function () {
         document.getElementById("randomRangeViewer").textContent = document.getElementById("random").value;
     });
+    document.getElementById("speedRange").addEventListener("input", function() {
+        let string = document.getElementById("speedViewer").textContent;
+        let counter = string.length - 1;
+        while (string[counter] !== " ") {
+            string = string.slice(0, -1);
+            counter--;
+        }
+        delay = 10 * (10 - Number(document.getElementById("speedRange").value));
+        string += document.getElementById("speedRange").value.toString();
+        document.getElementById("speedViewer").textContent = string;
+    })
 }
 
 
@@ -117,8 +131,7 @@ function createTableMatrix() {
             element.name = "cell";
             element.dataset.row = i.toString();
             element.dataset.col = j.toString();
-            element.addEventListener("click", pressOneCellEvent);
-
+            element.addEventListener("mousedown", pressOneCellEvent);
             row.append(element);
 
         }
@@ -290,10 +303,23 @@ function changeButtonsEnabling(mode) {
     }
     let ranges = document.querySelectorAll("input")
     for (let i = 0; i < ranges.length; i++) {
-        ranges[i].disabled = !!mode;
+        if (ranges[i].id != "speedRange") {
+            ranges[i].disabled = !!mode;
+        }
     }
 }
 
+function metricsDetermination() {
+    let radios = document.querySelectorAll('input[type=radio]');
+    for (let i = 0; i < radios.length; i++) {
+        radios[i].addEventListener("click", function() {
+            if (radios[i].checked) {
+                metrics = radios[i].value;
+                console.log(metrics);
+            }
+        })
+    }
+}
 
 // Создание лабиринта
 function mazeCreation() {
@@ -340,15 +366,24 @@ function drawMaze() {
 }
 
 
+
 //Алгоритм
 let index = 0;
 let breakFlag = false;
 let openList = [];
 let closeList = [];
-let changeList = []
+let changeList = [];
 
 function getDistance(firstPosition, secondPosition) {
-    return Math.abs(firstPosition.x - secondPosition.x) + Math.abs(firstPosition.y - secondPosition.y);
+    let dist;
+    if (metrics === "Euclidean") {
+        dist = Math.sqrt(Math.pow(firstPosition.x - secondPosition.x, 2) + Math.pow(firstPosition.y - secondPosition.y, 2));
+    } else if (metrics === "Manhattan") {
+        dist = Math.abs(firstPosition.x - secondPosition.x) + Math.abs(firstPosition.y - secondPosition.y);
+    } else {
+        dist = Math.max(Math.abs(firstPosition.x - secondPosition.x), Math.abs(firstPosition.y - secondPosition.y));
+    }
+    return dist;
 }
 
 function isClosed(temp) {
@@ -488,7 +523,7 @@ async function drawPath() {
         y = aStarMatrix[y][temp].parentY;
         cell = document.querySelector('td[data-col = "' + x + '"][data-row = "' + y + '"]');
         cell.classList.add("path");
-        await new Promise(resolve => setTimeout(resolve, 30))
+        await new Promise(resolve => setTimeout(resolve, delay))
     }
     cell.classList.remove("path");
     cell.classList.remove("currentCell");
@@ -507,7 +542,7 @@ async function aStar() {
             alert("No path found")
             break;
         }
-        await new Promise(resolve => setTimeout(resolve, 10))
+        await new Promise(resolve => setTimeout(resolve, delay / 3))
     }
     if (!flag) {
         await drawPath()

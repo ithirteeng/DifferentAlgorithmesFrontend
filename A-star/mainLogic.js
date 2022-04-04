@@ -16,7 +16,9 @@ let isStartButtonPressed = false;
 let isFinisButtonPressed = false;
 let lastButton = "";
 let metrics = "Euclidean";
+
 let isMouseDown = false;
+
 let delay = 30;
 
 function playMusic() {
@@ -136,6 +138,7 @@ function createTableMatrix() {
             element.name = "cell";
             element.dataset.row = i.toString();
             element.dataset.col = j.toString();
+
             element.addEventListener("mousedown", function () {
                 isMouseDown = true;
                 pressOneCellEvent(element);
@@ -145,6 +148,9 @@ function createTableMatrix() {
                     pressOneCellEvent(element);
                 }
             })
+
+            element.addEventListener("mousedown", pressOneCellEvent);
+
             row.append(element);
 
         }

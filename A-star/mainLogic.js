@@ -34,7 +34,7 @@ class Cell {
     }
 }
 
-document.querySelector('table').addEventListener("mouseup", function () {
+document.querySelector('body').addEventListener("mouseup", function () {
     isMouseDown = false;
 })
 

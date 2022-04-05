@@ -240,6 +240,7 @@ function pressOneCellEvent(target) {
                         startCords.x = col;
                         startCords.y = row;
                     } else {
+                        isMouseDown = false;
                         alert("This is the wall!");
                     }
                 } else {
@@ -256,6 +257,7 @@ function pressOneCellEvent(target) {
                         startCords.y = row;
                         console.log(startCords.x + "  " + startCords.y)
                     } else {
+                        isMouseDown = false;
                         alert("This is the wall!");
                     }
                 }
@@ -271,6 +273,7 @@ function pressOneCellEvent(target) {
                         finishCords.x = col;
                         finishCords.y = row;
                     } else {
+                        isMouseDown = false;
                         alert("This is the wall!");
                     }
                 } else {
@@ -286,6 +289,7 @@ function pressOneCellEvent(target) {
                         finishCords.x = col;
                         finishCords.y = row;
                     } else {
+                        isMouseDown = false;
                         alert("This is the wall!");
                     }
                 }
@@ -296,6 +300,7 @@ function pressOneCellEvent(target) {
                     cords[row][col] = 0;
                     aStarMatrix[row][col].value = 0;
                 } else {
+                    isMouseDown = false;
                     alert("Yo can't do it!");
                 }
                 break;
@@ -307,6 +312,7 @@ function pressOneCellEvent(target) {
                     cords[row][col] = 1;
                     aStarMatrix[row][col].value = 1;
                 } else {
+                    isMouseDown = false;
                     alert("You can't do it!");
                 }
                 break;

@@ -418,7 +418,7 @@ window.addEventListener('resize', function () {
     canvas.resize();
     clearAll();
 }, false);
-canvas.resize();
+window.onload = canvas.resize.bind(canvas);
 
 let clusters_number = 2;
 let dataArray = [];

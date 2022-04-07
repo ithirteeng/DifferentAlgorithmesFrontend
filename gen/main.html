@@ -18,7 +18,7 @@
             </a>
             <nav class="nav">
                 <a class="nav__link" href="">Муравьиный алгоритм</a>
-                <a class="nav__link" href="">Генетический алгоритм</a>
+                <a class="nav__link" href="">Генетический алгоритм</a> <!-- Это отсюда надо убрать -->
                 <a class="nav__link" href="../A-star/main.html">Алгоритм А*</a>
                 <a class="nav__link" href="../clusterization/main.html">Кластеризация</a>
                 <a class="nav__link" href="../Neural/main.html">Нейронная сеть</a>
@@ -30,25 +30,36 @@
 <div class="main">
     <div class="container">
         <div class="row">
-        <div class="row">
-            <div class="col-lg-6 col-md-12">
-                <div class="container-canvas" id="container-canvas">
-                    <canvas id="canvas_1">Ваш браузер не поддерживает canvas</canvas>
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="canvas" id="canvas">
+                        <canvas id="canvas_1">Ваш браузер не поддерживает canvas</canvas>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-6 col-md-12">
-                <div class="container-settings">
-                    <button id="Start" class="buttons" onclick="startKMeans()">Start</button>
-                    <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
-                    <input type="text" id="generationCounter" value="2" oninput="inputRangeByText()">
-                    <input id="generationNumber" type="range" min="1" max="20" value="2" class="range"
-                           oninput="inputRange()">
+                <div class="col-lg-6 col-md-12">
+                    <div class="userOptions">
+                        <div class="buttons-container">
+                            <button id="Start" class="buttons" onclick="startGenAlgorithm()">Start</button>
+                            <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
+                        </div>
+                        <div class="preferences">
+                            <div id="generationNumber" class="RangeViewer">
+                                <p id="generationCounter" class="RangeText">Количество поколений: 2</p>
+                                <input class="Range" id="generationRange" type="range" min="1" max="20" value="2"
+                                       oninput="inputRange('generation')">
+                            </div>
+                            <div id="populationLength" class="RangeViewer">
+                                <p id="populationCounter" class="RangeText">Размер популяции: 20</p>
+                                <input class="Range" id="populationRange" type="range" min="10" max="2000" value="20"
+                                       oninput="inputRange('population')">
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 
 </body>
 </html>

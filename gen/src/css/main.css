@@ -115,7 +115,7 @@ body {
     justify-content: center;
 }
 
-.container-canvas {
+.canvas {
     display: block;
     justify-content: center;
     border: 2px solid red;
@@ -130,7 +130,7 @@ body {
     background: no-repeat aliceblue;
 }
 
-.container-settings {
+.userOptions {
     display: block;
     justify-content: center;
     margin: auto;
@@ -138,6 +138,18 @@ body {
     min-width: 550px;
     width: 45%;
     height: 75vh;
+}
+.RangeViewer {
+    display: block;
+    margin: 0 0 0 10px;
+}
+.RangeText {
+    margin: 0;
+}
+.Range {
+    margin: 0;
+    display: block;
+    width: 400px;
 }
 
 .buttons {
@@ -156,9 +168,4 @@ body {
 
 #clusterCounter {
     margin: 10px ;
-}
-.range {
-    margin: 10px;
-    display: block;
-    width: 400px;
 }

@@ -22,24 +22,10 @@ class Canvas {
         console.log(`CANVAS PROPERTIES\n    Width: ${canvas.width}\n    Height: ${canvas.height}`)
     }
 
-    drawCirclePoint(point, color, map) {
-        console.log(map);
-        let ctx = map.context;
-        ctx.beginPath();
-        ctx.strokeStyle = myColor;
-        ctx.lineWidth = 8;
-        ctx.fillStyle = color;
-        let radius = 10;
-        ctx.arc(point.x + 3, point.y + 4, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-        ctx.fillStyle = 'black';
-    }
-
     drawCirclePoint(point, color) {
         let ctx = this.context;
         ctx.beginPath();
-        ctx.strokeStyle = myColor;
+        ctx.strokeStyle = "brown";
         ctx.lineWidth = 8;
         ctx.fillStyle = color;
         let radius = 10;
@@ -48,70 +34,128 @@ class Canvas {
         ctx.fill();
         ctx.fillStyle = 'black';
     }
-
-    drawRightHalfCirclePoint(point, color) {
-        let ctx = this.context;
-        ctx.beginPath();
-        ctx.strokeStyle = myColor;
-        ctx.lineWidth = 8;
-        ctx.fillStyle = color;
-        let radius = 10;
-        ctx.arc(point.x + 3, point.y + 4, radius, Math.PI * 3 / 2, Math.PI / 2);
-        ctx.stroke();
-        ctx.fill();
-        ctx.fillStyle = 'black';
-    }
-
-    drawLeftHalfCirclePoint(point, color) {
-        let ctx = this.context;
-        ctx.beginPath();
-        ctx.strokeStyle = myColor;
-        ctx.lineWidth = 8;
-        ctx.fillStyle = color;
-        let radius = 10;
-        ctx.arc(point.x + 3, point.y + 4, radius, Math.PI * 1 / 2, Math.PI * -1 / 2);
-        ctx.stroke();
-        ctx.fill();
-        ctx.fillStyle = 'black';
-    }
-
-    drawTrianglePoint(point, color) {
-        let ctx = this.context;
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.moveTo(point.x - 7, point.y + 10);
-        ctx.lineTo(point.x + 3, point.y - 7);
-        ctx.lineTo(point.x + 13, point.y + 10);
-        ctx.fill();
-        ctx.fillStyle = 'black';
-    }
-
 }
 
-class
+class GeneticAlgorithm {
+    constructor(dataArray, generations_number) {
+        this.first_chromosome = JSON.parse(JSON.stringify(dataArray));
+        this.population = [[/*variable for array of population arrays*/]]
+        this.distances = [[/*variable for matrix of distances*/]];
+        this.recordDistance = Infinity;
+        this.bestEver = this.first_chromosome;
+        this.createMatrixOfDistances();
+        this.createPopulation();
+        this.crossing();
+    }
 
+    shuffle(arr) {
+        // function to shuffle first chromosome for first population
+        let array = JSON.parse(JSON.stringify(arr));
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+
+    calcDistance(order) {
+        let sum = 0;
+        for (let i = 0; i < order.length - 1; i++) {
+            let townA = order[i];
+            let townB = order[i + 1];
+            sum += this.distances[townA][townB];
+        }
+        sum += this.distances[order[0]][order[order.length]]; // way is looped;
+        return sum;
+    }
+
+    createMatrixOfDistances() {
+        this.distances = [];
+        for (let i = 0; i < this.first_chromosome.length; i++) {
+            let interimArray = [];
+            for (let j = 0; j < this.first_chromosome.length; j++) {
+                let x = computeEuclidDistance(this.first_chromosome[i], this.first_chromosome[j]);
+                interimArray.push(x);
+            }
+            this.distances.push(interimArray);
+        }
+    }
+
+    createPopulation() {
+        // shuffle function from p5
+        this.population = [];
+        for (let i = 0; i < population_length; i++) {
+            this.population.push(this.shuffle(this.first_chromosome));
+        }
+    }
+
+    crossing() {
+        // Не доделал!
+        let population = this.shuffle(this.population);        // shuffle for random parent pairs distribution
+        let separator = Math.ceil(population[0].length / 3);
+        for (let i = 0; i < this.population.length; i += 2) {
+            let parent1 = population.pop();
+            let parent2 = population.pop();
+            // console.log("parent 1 = ", parent1)
+            // console.log("parent 2 = ", parent2)
+            let child1 = [];
+            let child2 = [];
+            for (let j = 0; j <= separator; j++) { // Fill part in chromosome before separator (inclusive)
+                child1.push(parent1[j]);
+                child2.push(parent2[j]);
+            }
+            for (let j = 0; j < parent1.length; j++) {
+                let par1jInChild2 = false;
+                for (let k = 0; k < child2.length; k++) {
+                    if (comparePoints(parent1[j], child2[k])) {
+                        par1jInChild2 = true;
+                        break;
+                    }
+                }
+                let par2jInChild1 = false;
+                for (let k = 0; k < child1.length; k++) {
+                    if (comparePoints(parent2[j], child1[k])) {
+                        par2jInChild1 = true;
+                        break;
+                    }
+                }
+                if (!par1jInChild2) {
+                    child2.push(parent1[j]);
+                }
+                if (!par2jInChild1) {
+                    child1.push(parent2[j]);
+                }
+            }
+            // console.log("child 1 = ", child1);
+            // console.log("child 2 = ", child2);
+            this.population.push(child1);
+            this.population.push(child2);
+        }
+    }
+    mutation(){
+
+    }
+}
 
 function putPointByClick(event) {
     let x = event.offsetX;
     let y = event.offsetY;
     canvas.drawCirclePoint({x, y}, 'white');
-    dataArray.push({x, y, minDistance: 99999999, cluster: -1, color: 'white'});
+    dataArray.push({x, y});
 }
 
-function inputRangeByText() {
-    let rng = document.getElementById("clustersNumber");
-    let counter = document.getElementById('clusterCounter');
-    rng.value = counter.value;
-    clusters_number = parseInt(counter.value);
-    console.log("Изменен range input через text");
-}
-
-function inputRange() {
-    let rng = document.getElementById("clustersNumber");
-    let counter = document.getElementById('clusterCounter');
-    counter.value = rng.value;
-    clusters_number = parseInt(rng.value);
-    console.log("Изменен range input");
+function inputRange(id) {
+    let dict = {'population': population_length, 'generation': generations_number}
+    let rng = document.getElementById(`${id}Range`);
+    let counter = document.getElementById(`${id}Counter`);
+    counter.textContent = counter.textContent.replace(/\d+/, `${rng.value}`);
+    // НЕ ИЗМЕНЯЮТСЯ ПЕРЕМЕННЫЕ ПО ПЕРЕДАННОМУ ID
+    dict[id] = parseInt(rng.value);
+    console.log(`Изменен ${id} range`);
 }
 
 function checkPoints() {
@@ -123,17 +167,29 @@ function checkPoints() {
     }
 }
 
-function startKMeans() {
+function computeEuclidDistance(point1, point2) {
+    return (point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2
+}
+
+function comparePoints(point1, point2) {
+    if (point1.x === point2.x && point1.y === point2.y) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function startGenAlgorithm() {
     if (checkPoints()) {
         return;
     }
-    document.getElementById('Start K-means').textContent = "Restart";
+    document.getElementById('Start').textContent = "Restart";
     if (is_started) {
         restore();
     }
-    console.log("Старт K-means");
+    console.log("Старт Genetic algorithm");
     is_started = true;
-    ФУНКЦИЯ СТАРТА //(let solve = new ClassObject(dataArray, чот еще )
+    let solve = new GeneticAlgorithm(dataArray, generations_number);
 }
 
 function restore() {
@@ -146,26 +202,28 @@ function restore() {
 
 function clearAll() {
     // Clears canvas and data. Creates standard solve with current amount of clusters
-    console.log("CLEEEEEAR!")
+    console.log('CLEEEEEAR!')
     dataArray = [];
     canvas.clearField();
     document.getElementById('Start').textContent = "Start"
     is_started = false;
 }
 
-let canvas = new Canvas('canvas_1', 'container-canvas');
+let canvas = new Canvas('canvas_1', 'canvas');
 canvas.canvas.addEventListener('mousedown', function (event) {
     putPointByClick(event, canvas);
     if (is_started) {
-        startKMeans();
+        startGenAlgorithm();
     }
 })
-
 window.addEventListener('resize', function () {
     canvas.resize();
     clearAll();
 }, false);
 canvas.resize();
 
+let mutation_rate = 0.1;
+let population_length = 10;
+let generations_number = 2;
 let dataArray = [];
 let is_started = false;

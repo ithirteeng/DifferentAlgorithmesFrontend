@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../src/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="../src/css/index.css">
     <link rel="stylesheet" href="src/css/main.css">
-
 </head>
 <body>
 <header class="header">
@@ -19,9 +18,9 @@
             <nav class="nav">
                 <a class="nav__link" href="" title="">Муравьиный алгоритм</a>
                 <a class="nav__link" href="../gen/main.html" title="">Генетический алгоритм</a>
-                <a class="nav__link" href="../A-star/main.html" title="Алгоритм А*. Что ты ожидал тут увидеть?">Алгоритм А*</a>
+                <a class="nav__link" href="../A-star/main.html" title="">Алгоритм А*</a>
                 <a class="nav__link" href="" title="You're here!">Кластеризация</a>
-                <a class="nav__link" href="../Neural/main.html" title="Пока что пусто?">Нейронная сеть</a>
+                <a class="nav__link" href="../Neural/main.html" title="">Нейронная сеть</a>
             </nav>
         </div>
     </div>
@@ -35,18 +34,15 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-12">
-                <div class="container-settings">
-                    <button id="Start K-means" class="buttons" onclick="startKMeans()">
-                        Start
-                    </button>
-                    <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
-                    <input type="color" id="color" oninput="inputColor()">
-                    <input type="text" id="clusterCounter" value="2" oninput="inputRangeByText()">
-                    <input id="clustersNumber" type="range" min="1" max="20" value="2" class="range"
-                           oninput="inputRange()">
-                    <br>
-                    <button id="Start AGNES" class="buttons" onclick="startAGNES()">Start</button>
-                </div>
+                <button id="buttonStart" class="buttons" onclick="startKMeans()">
+                    Start
+                </button>
+                <button id="clearButton" class="buttons" onclick="clearAll()">
+                    Clear
+                </button>
+                <input type="color" id="color" oninput="inputColor()">
+                <input type="text" id="clusterCounter" value="2" oninput="inputRangeByText()">
+                <input id="clustersNumber" type="range" min="1" max="20" value="2" class="range" oninput="inputRange()">
             </div>
         </div>
     </div>

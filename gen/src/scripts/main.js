@@ -35,21 +35,38 @@ class Canvas {
         ctx.fillStyle = 'black';
     }
 }
-
 class GeneticAlgorithm {
     constructor(dataArray, generations_number) {
-        this.first_chromosome = JSON.parse(JSON.stringify(dataArray));
+        this.arrayOfGens = JSON.parse(JSON.stringify(dataArray));
+        this.first_chromosome = Array.from(Array(dataArray.length).keys()) // Contain number of every gen from 0 to N gens. It needs to create populations
+        this.distances = [[/*variable for matrix of distances between gens*/]];
+        this.createMatrixOfDistances(computeEuclidDistance); // Can be changed by another metric
         this.population = [[/*variable for array of population arrays*/]]
-        this.distances = [[/*variable for matrix of distances*/]];
         this.recordDistance = Infinity;
-        this.bestEver = this.first_chromosome;
-        this.createMatrixOfDistances();
+        this.bestEver = this.arrayOfGens;
         this.createPopulation();
         this.crossing();
+        console.log(this.population)
+        this.selection();
+        console.log(this.population)
+    }
+
+    createMatrixOfDistances(computeDistance) {
+        // matrix of distances between gens(towns)
+
+        this.distances = [];
+        for (let i = 0; i < this.arrayOfGens.length; i++) {
+            let interimArray = [];
+            for (let j = 0; j < this.arrayOfGens.length; j++) {
+                let x = computeDistance(this.arrayOfGens[i], this.arrayOfGens[j]);
+                interimArray.push(x);
+            }
+            this.distances.push(interimArray);
+        }
     }
 
     shuffle(arr) {
-        // function to shuffle first chromosome for first population
+        // function to shuffle array. Can be used as Mutation
         let array = JSON.parse(JSON.stringify(arr));
         let currentIndex = array.length, randomIndex;
         while (currentIndex != 0) {
@@ -69,39 +86,31 @@ class GeneticAlgorithm {
             let townB = order[i + 1];
             sum += this.distances[townA][townB];
         }
-        sum += this.distances[order[0]][order[order.length]]; // way is looped;
+        sum += this.distances[order[0]][order[order.length - 1]]; // way is looped;
         return sum;
     }
 
-    createMatrixOfDistances() {
-        this.distances = [];
-        for (let i = 0; i < this.first_chromosome.length; i++) {
-            let interimArray = [];
-            for (let j = 0; j < this.first_chromosome.length; j++) {
-                let x = computeEuclidDistance(this.first_chromosome[i], this.first_chromosome[j]);
-                interimArray.push(x);
-            }
-            this.distances.push(interimArray);
-        }
-    }
 
     createPopulation() {
-        // shuffle function from p5
+        // shuffling array of numbers to create population with (population_length) individuals
+
         this.population = [];
         for (let i = 0; i < population_length; i++) {
-            this.population.push(this.shuffle(this.first_chromosome));
+            let new_chromosome = this.shuffle(this.first_chromosome);
+            // this.calcDistance(new_chromosome)
+            this.population.push(new_chromosome);
         }
     }
 
     crossing() {
-        // Не доделал!
+        // after this method population length is doubled
+
         let population = this.shuffle(this.population);        // shuffle for random parent pairs distribution
         let separator = Math.ceil(population[0].length / 3);
-        for (let i = 0; i < this.population.length; i += 2) {
+        let popLength = this.population.length;
+        for (let i = 0; i < popLength; i += 2) {
             let parent1 = population.pop();
             let parent2 = population.pop();
-            // console.log("parent 1 = ", parent1)
-            // console.log("parent 2 = ", parent2)
             let child1 = [];
             let child2 = [];
             for (let j = 0; j <= separator; j++) { // Fill part in chromosome before separator (inclusive)
@@ -111,14 +120,14 @@ class GeneticAlgorithm {
             for (let j = 0; j < parent1.length; j++) {
                 let par1jInChild2 = false;
                 for (let k = 0; k < child2.length; k++) {
-                    if (comparePoints(parent1[j], child2[k])) {
+                    if (parent1[j] === child2[k]) {
                         par1jInChild2 = true;
                         break;
                     }
                 }
                 let par2jInChild1 = false;
                 for (let k = 0; k < child1.length; k++) {
-                    if (comparePoints(parent2[j], child1[k])) {
+                    if (parent2[j] === child1[k]) {
                         par2jInChild1 = true;
                         break;
                     }
@@ -130,15 +139,80 @@ class GeneticAlgorithm {
                     child1.push(parent2[j]);
                 }
             }
-            // console.log("child 1 = ", child1);
-            // console.log("child 2 = ", child2);
+            this.calcDistance(child1);
+            this.calcDistance(child2);
             this.population.push(child1);
             this.population.push(child2);
         }
     }
-    mutation(){
 
+    swapMutation(array) {
+        // swaps random gens in current chromosome
+        let index1, index2;
+        while (index2 === index1) {
+            index1 = Math.floor(Math.random() * array.length)
+            index2 = Math.floor(Math.random() * array.length)
+        }
+        [array[index1], array[index2]] = [array[index2], array[index1]]
     }
+
+    inversionMutation(array) {
+        let index1, index2;
+        while ((index2 === index1)) {
+            index1 = Math.floor(Math.random() * array.length)
+            index2 = Math.floor(Math.random() * array.length)
+        }
+        if (index1 > index2) {
+            [index2, index1] = [index1, index2];
+        }
+        for (let i = index1, j = index2; j >= i; i++, j--) {
+            [array[j], array[i]] = [array[i], array[j]]
+        }
+    }
+    // scrambleMutation(){
+    //     // I didn't want to code it that's why it's only stub
+    // }
+    mutations(typeOfMutation) {
+        for (let i = 0; i < this.population.length; i++) {
+            if (Math.random() > mutation_rate) {
+                continue;
+            }
+            this.population[i] = typeOfMutation(this.population[i]);
+        }
+    }
+
+    siftUp(array, i, k) {
+        // function for K-min
+        while (2 * i + 1 < k) {
+            let left = 2 * i + 1, right = 2 * i + 2, j = left;
+            if ((right < k) && (this.calcDistance(array[right]) > this.calcDistance(array[left]))) j = right;
+            if (this.calcDistance(array[i]) >= this.calcDistance(array[j])) break;
+            [array[i], array[j]] = [array[j], array[i]];
+            i = j;
+        }
+    }
+
+    selection() {
+        // selection by K-min algorithm
+        let x, populationTemp = [];
+        for (let i = 0; i < population_length; i++) {
+            populationTemp.push(this.population[i]);
+        }
+        for (let i = population_length / 2; i >= 0; i--) {
+            this.siftUp(populationTemp, i, population_length);
+        }
+        for (let i = population_length; i < this.population.length; i++) {
+            x = this.population[i]
+            if (this.calcDistance(x) < this.calcDistance(populationTemp[0])) {
+                populationTemp.push(x);
+                populationTemp[0] = x;
+                this.siftUp(populationTemp, 0, population_length);
+            }
+        }
+        this.population = populationTemp;
+    }
+
+
 }
 
 function putPointByClick(event) {
@@ -149,12 +223,19 @@ function putPointByClick(event) {
 }
 
 function inputRange(id) {
-    let dict = {'population': population_length, 'generation': generations_number}
+    // let dict = {'population': population_length, 'generation': generations_number, 'mutation': mutation_rate}
     let rng = document.getElementById(`${id}Range`);
     let counter = document.getElementById(`${id}Counter`);
     counter.textContent = counter.textContent.replace(/\d+/, `${rng.value}`);
     // НЕ ИЗМЕНЯЮТСЯ ПЕРЕМЕННЫЕ ПО ПЕРЕДАННОМУ ID
-    dict[id] = parseInt(rng.value);
+    switch (id) {
+        case 'population':
+            population_length = parseInt(rng.value);
+        case 'generation':
+            generations_number = parseInt(rng.value);
+        case 'mutation':
+            mutation_rate = parseInt(rng.value);
+    }
     console.log(`Изменен ${id} range`);
 }
 
@@ -202,7 +283,7 @@ function restore() {
 
 function clearAll() {
     // Clears canvas and data. Creates standard solve with current amount of clusters
-    console.log('CLEEEEEAR!')
+    console.log('CLEAR ALL!')
     dataArray = [];
     canvas.clearField();
     document.getElementById('Start').textContent = "Start"
@@ -220,10 +301,10 @@ window.addEventListener('resize', function () {
     canvas.resize();
     clearAll();
 }, false);
-canvas.resize();
-
+window.onload = canvas.resize.bind(canvas);
 let mutation_rate = 0.1;
-let population_length = 10;
+let population_length = 20;
 let generations_number = 2;
 let dataArray = [];
 let is_started = false;
+

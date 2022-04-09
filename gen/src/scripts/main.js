@@ -13,6 +13,13 @@ class Canvas {
         this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
     }
 
+    restorePoints(arrayOfPoints) {
+        // Redraw points from arrayOfPoints;
+        arrayOfPoints.forEach(item => {
+            canvas.drawCirclePoint(item, 'white');
+        })
+    }
+
     resize() {
         // Resizes canvas if event == 'resize'
         this.canvas.width = this.container.offsetWidth;
@@ -34,34 +41,45 @@ class Canvas {
         ctx.fill();
         ctx.fillStyle = 'black';
     }
+
+    drawWay(array, color) {
+        this.context.beginPath();
+        this.context.lineWidth = 2;
+        this.context.strokeStyle = color;
+        this.context.moveTo(array[0].x, array[0].y);
+        for (let i = 0; i < array.length; i++) {
+            this.context.lineTo(dataArray[array[i]].x, dataArray[array[i]].y);
+        }
+        this.context.lineTo(dataArray[array[0]].x, dataArray[array[0]].y);
+        this.context.stroke();
+    }
 }
+
 class GeneticAlgorithm {
-    constructor(dataArray, generations_number) {
-        this.arrayOfGens = JSON.parse(JSON.stringify(dataArray));
-        this.first_chromosome = Array.from(Array(dataArray.length).keys()) // Contain number of every gen from 0 to N gens. It needs to create populations
-        this.distances = [[/*variable for matrix of distances between gens*/]];
+    constructor(dataArray) {
+        this.arrayOfGens = dataArray; // just link to dataArray
+        this.first_chromosome = Array.from(Array(this.arrayOfGens.length).keys()) // Contain number of every gen from 0 to N gens. It needs to create populations
+        this.bestEver = [];
+        this.bestDistance = Infinity;
+        this.distancesBtwGens = [[/*variable for matrix of distances between gens*/]];
         this.createMatrixOfDistances(computeEuclidDistance); // Can be changed by another metric
         this.population = [[/*variable for array of population arrays*/]]
-        this.recordDistance = Infinity;
-        this.bestEver = this.arrayOfGens;
-        this.createPopulation();
-        this.crossing();
-        console.log(this.population)
-        this.selection();
-        console.log(this.population)
+        this.createFirstPopulation();
+        this.algorithm();
+
     }
 
     createMatrixOfDistances(computeDistance) {
         // matrix of distances between gens(towns)
 
-        this.distances = [];
+        this.distancesBtwGens = [];
         for (let i = 0; i < this.arrayOfGens.length; i++) {
             let interimArray = [];
             for (let j = 0; j < this.arrayOfGens.length; j++) {
                 let x = computeDistance(this.arrayOfGens[i], this.arrayOfGens[j]);
                 interimArray.push(x);
             }
-            this.distances.push(interimArray);
+            this.distancesBtwGens.push(interimArray);
         }
     }
 
@@ -84,20 +102,18 @@ class GeneticAlgorithm {
         for (let i = 0; i < order.length - 1; i++) {
             let townA = order[i];
             let townB = order[i + 1];
-            sum += this.distances[townA][townB];
+            sum += this.distancesBtwGens[townA][townB];
         }
-        sum += this.distances[order[0]][order[order.length - 1]]; // way is looped;
+        sum += this.distancesBtwGens[order[0]][order[order.length - 1]]; // way is looped;
         return sum;
     }
 
-
-    createPopulation() {
+    createFirstPopulation() {
         // shuffling array of numbers to create population with (population_length) individuals
 
         this.population = [];
         for (let i = 0; i < population_length; i++) {
             let new_chromosome = this.shuffle(this.first_chromosome);
-            // this.calcDistance(new_chromosome)
             this.population.push(new_chromosome);
         }
     }
@@ -169,50 +185,68 @@ class GeneticAlgorithm {
             [array[j], array[i]] = [array[i], array[j]]
         }
     }
-    // scrambleMutation(){
-    //     // I didn't want to code it that's why it's only stub
+
+    // scrambleMutation(array){
+    //     let index1, index2;
+    //         while ((index2 === index1)) {
+    //             index1 = Math.floor(Math.random() * array.length)
+    //             index2 = Math.floor(Math.random() * array.length)
+    //         }
+    //         if (index1 > index2) {
+    //             [index2, index1] = [index1, index2];
+    //         }
     // }
+    // Надо дописать скрэмбл и написать что-то вроде random mutation, который будет выбирать из того, что есть
     mutations(typeOfMutation) {
+
         for (let i = 0; i < this.population.length; i++) {
             if (Math.random() > mutation_rate) {
                 continue;
             }
-            this.population[i] = typeOfMutation(this.population[i]);
-        }
-    }
-
-    siftUp(array, i, k) {
-        // function for K-min
-        while (2 * i + 1 < k) {
-            let left = 2 * i + 1, right = 2 * i + 2, j = left;
-            if ((right < k) && (this.calcDistance(array[right]) > this.calcDistance(array[left]))) j = right;
-            if (this.calcDistance(array[i]) >= this.calcDistance(array[j])) break;
-            [array[i], array[j]] = [array[j], array[i]];
-            i = j;
+            typeOfMutation(this.population[i]);
         }
     }
 
     selection() {
-        // selection by K-min algorithm
-        let x, populationTemp = [];
-        for (let i = 0; i < population_length; i++) {
-            populationTemp.push(this.population[i]);
-        }
-        for (let i = population_length / 2; i >= 0; i--) {
-            this.siftUp(populationTemp, i, population_length);
-        }
-        for (let i = population_length; i < this.population.length; i++) {
-            x = this.population[i]
-            if (this.calcDistance(x) < this.calcDistance(populationTemp[0])) {
-                populationTemp.push(x);
-                populationTemp[0] = x;
-                this.siftUp(populationTemp, 0, population_length);
+        // selection by sorting
+        let arrayOfChromosomeDistances = Array.from(this.population, this.calcDistance, this);
+        let arrayOfPopulationIndexes = Array.from(Array(this.population.length).keys());
+        arrayOfPopulationIndexes = arrayOfPopulationIndexes.sort((a, b) => {
+            if (arrayOfChromosomeDistances[a] < arrayOfChromosomeDistances[b]) {
+                return -1;
+
+            } else if (arrayOfChromosomeDistances[a] > arrayOfChromosomeDistances[b]) {
+                return 1;
+            } else {
+                return 0;
             }
-        }
-        this.population = populationTemp;
+        })
+        let populationTemp = Array.from(arrayOfPopulationIndexes, item => this.population[item], this);
+        this.population = populationTemp.slice(0, population_length)
     }
 
+    algorithm() {
+        canvas.drawWay(this.first_chromosome, 'brown')
+        let currentGeneration = 1;
+        let conditionToStop = (currentGeneration) => { // тут можно добавить различных условий, помимо текущего поколения
+            return (currentGeneration > generation_number)
+        }
+        while (!conditionToStop(currentGeneration)) {
+            this.crossing();
+            this.mutations(this.inversionMutation)
+            this.selection();
+            let bestPopulationDistance = this.calcDistance(this.population[0]);
+            if (bestPopulationDistance < this.bestDistance) {
+                this.bestEver = this.population[0];
+                this.bestDistance = bestPopulationDistance;
+                canvas.clearField();
+                canvas.drawWay(this.bestEver, 'brown')
+                canvas.restorePoints(dataArray);
+            }
+            currentGeneration++;
 
+        }
+    }
 }
 
 function putPointByClick(event) {
@@ -223,20 +257,22 @@ function putPointByClick(event) {
 }
 
 function inputRange(id) {
-    // let dict = {'population': population_length, 'generation': generations_number, 'mutation': mutation_rate}
     let rng = document.getElementById(`${id}Range`);
     let counter = document.getElementById(`${id}Counter`);
     counter.textContent = counter.textContent.replace(/\d+/, `${rng.value}`);
-    // НЕ ИЗМЕНЯЮТСЯ ПЕРЕМЕННЫЕ ПО ПЕРЕДАННОМУ ID
     switch (id) {
         case 'population':
             population_length = parseInt(rng.value);
+            break;
         case 'generation':
-            generations_number = parseInt(rng.value);
+            generation_number = parseInt(rng.value);
+            break;
         case 'mutation':
-            mutation_rate = parseInt(rng.value);
+            mutation_rate = parseInt(rng.value) / 100;
+            break;
     }
     console.log(`Изменен ${id} range`);
+    console.log(population_length, generation_number, mutation_rate);
 }
 
 function checkPoints() {
@@ -252,33 +288,20 @@ function computeEuclidDistance(point1, point2) {
     return (point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2
 }
 
-function comparePoints(point1, point2) {
-    if (point1.x === point2.x && point1.y === point2.y) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 function startGenAlgorithm() {
     if (checkPoints()) {
         return;
     }
     document.getElementById('Start').textContent = "Restart";
     if (is_started) {
-        restore();
+        canvas.clearField();
+        canvas.restorePoints(dataArray);
+        console.log("Restart GA");
+    } else {
+        console.log("Start Genetic algorithm");
+        is_started = true;
     }
-    console.log("Старт Genetic algorithm");
-    is_started = true;
-    let solve = new GeneticAlgorithm(dataArray, generations_number);
-}
-
-function restore() {
-    // Saves points but removes centroids;
-    canvas.clearField();
-    dataArray.forEach(item => {
-        canvas.drawCirclePoint(item, 'white');
-    })
+    let solve = new GeneticAlgorithm(dataArray, generation_number);
 }
 
 function clearAll() {
@@ -302,9 +325,9 @@ window.addEventListener('resize', function () {
     clearAll();
 }, false);
 window.onload = canvas.resize.bind(canvas);
-let mutation_rate = 0.1;
+let mutation_rate = 0.2;
 let population_length = 20;
-let generations_number = 2;
+let generation_number = 20;
 let dataArray = [];
 let is_started = false;
 

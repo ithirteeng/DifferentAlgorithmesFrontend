@@ -1,0 +1,179 @@
+body {
+    font-family: "Comic Sans MS", monospace;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.container {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sectionSetting {
+    display: flex;
+    border: 3px solid blue;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+
+}
+
+.table-container {
+    border: 2px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 60px;
+    margin-right: 30px;
+    width: 850px;
+    height: 850px;
+    min-height: 840px;
+    min-width: 840px;
+}
+
+.settings-container {
+    display: block;
+    justify-content: center;
+    margin-right: 60px;
+    margin-left: 30px;
+    border: 2px solid red;
+    width: 850px;
+    height: 850px;
+    min-height: 840px;
+    min-width: 840px;
+}
+
+button:disabled {
+    cursor: pointer;
+    margin: 20px;
+    height: 50px;
+    width: 150px;
+    font-family: "Comic Sans MS", monospace;
+    font-size: 20px;
+    background: aqua;
+    border-radius: 10px;
+}
+
+.buttons {
+    cursor: pointer;
+    margin: 20px;
+    height: 50px;
+    width: 150px;
+    font-family: "Comic Sans MS", monospace;
+    font-size: 20px;
+    background: aqua;
+    border-radius: 10px;
+}
+
+.updateButtonStyle {
+    cursor: pointer;
+    margin: 20px;
+    height: 50px;
+    width: 150px;
+    font-family: "Comic Sans MS", monospace;
+    font-size: 20px;
+    background: aqua;
+    border-radius: 10px;
+}
+
+.updateButtonStyle:hover {
+    background-color: #c500d9;
+}
+
+.beginButtonStyle {
+    cursor: pointer;
+    margin: 20px;
+    height: 50px;
+    width: 150px;
+    font-family: "Comic Sans MS", monospace;
+    font-size: 20px;
+    background: aqua;
+    border-radius: 10px;
+}
+
+.beginButtonStyle:hover {
+    background-color: #c500d9;
+}
+
+.buttons:hover {
+    background: blueviolet;
+}
+
+.range {
+    display: block;
+    width: 400px;
+}
+
+table {
+    outline: 5px solid black;
+    height: 90%;
+    width: 90%;
+    margin: 0;
+    padding: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table tr td {
+    border: 1px solid black;
+}
+
+table tr td:hover {
+    background-color: #ffeb87;
+}
+
+table tr td.elem {
+    cursor: pointer;
+}
+
+table tr td.elem.wall {
+    background-color: #4d4d4d;
+}
+
+table tr td.elem.wall:hover {
+    background-color: rgba(101, 101, 101, 0.32);
+}
+
+table tr td.elem.start {
+    background-color: green;
+}
+
+table tr td.elem.start:hover {
+    background-color: rgba(2, 178, 2, 0.4);
+}
+
+table tr td.elem.finish {
+    background-color: red;
+}
+
+table tr td.elem.finish:hover {
+    background-color: rgba(255, 0, 0, 0.37);
+}
+table tr td.elem.currentCell {
+    background-color: rgb(248, 213, 124);
+}
+table tr td.elem.currentCell:hover {
+    background-color: rgb(217, 199, 147);
+}
+table tr td.elem.path {
+    background-color: rgb(141, 124, 248);
+}
+table tr td.elem.path:hover {
+    background-color: rgb(163, 151, 224);
+}
+
+
+
+
+
+
+
+
+
+
+
+

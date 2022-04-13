@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>A-STAR ALGORITHM</title>
+    <link href="css/mainStyle.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="container">
+        A-star algorithm:
+    </div>
+</header>
+<section class="sectionSetting">
+    <div class="table-container">
+        <table class="table-matrix">
+            <tbody id="matrix"></tbody>
+        </table>
+    </div>
+    <div class="settings-container">
+        <button id="buttonStart" class="buttons">
+            Start
+        </button>
+        <button id="finishButton" class="buttons">
+            Finish
+        </button>
+        <button id="mazeButton" class="buttons">
+            Create maze
+        </button>
+        <br>
+        <button id="deleteWallButton" class="buttons">
+            Delete wall
+        </button>
+        <button id="createWallButton" class="buttons">
+            Create wall
+        </button>
+        <button id="clearButton" class="buttons">
+            Clear
+        </button>
+        <p id="inputRangeViewer">30</p>
+        <input id="matrixSize" type="range" min="5" max="69" value="30" class="range">
+        <p  id="randomRangeViewer">30</p>
+        <input id="random" type="range" min="0" max="100" value="30" class="range">
+        <button id="randomButton" class="updateButtonStyle">
+            random
+        </button>
+        <button id="beginButton" class="beginButtonStyle">
+            Begin
+        </button>
+    </div>
+</section>
+<script type="module" src="mainLogic.js"></script>
+</body>
+</html>

@@ -266,7 +266,7 @@ class AGNES {
             }, this);
             centroid.x /= centroid.pointsNumber;
             centroid.y /= centroid.pointsNumber;
-            drawPointFunction(centroid, centroid.color, this);
+            canvas.drawTrianglePoint(centroid, centroid.color, this);
         }, canvas);
     }
 

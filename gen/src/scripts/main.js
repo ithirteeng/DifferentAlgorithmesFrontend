@@ -61,22 +61,29 @@ class GeneticAlgorithm {
         this.first_chromosome = Array.from(Array(this.arrayOfGens.length).keys()) // Contain number of every gen from 0 to N gens. It needs to create populations
         this.bestEver = [];
         this.bestDistance = Infinity;
+        this.mutationTypes = {
+            "swap": this.swapMutation,
+            "inversion": this.inversionMutation,
+            "scramble": this.scrambleMutation,
+            "random": this.randomMutation.bind(this)
+        }
         this.distancesBtwGens = [[/*variable for matrix of distances between gens*/]];
-        this.createMatrixOfDistances(computeEuclidDistance); // Can be changed by another metric
+        checkRadioButtons("metric");
+        this.createMatrixOfDistances(metricTypes[distanceMetric]);
+        console.log(metricTypes[distanceMetric])
         this.population = [[/*variable for array of population arrays*/]]
         this.createFirstPopulation();
         this.algorithm();
-
     }
 
-    createMatrixOfDistances(computeDistance) {
+    createMatrixOfDistances(distanceMetric) {
         // matrix of distances between gens(towns)
 
         this.distancesBtwGens = [];
         for (let i = 0; i < this.arrayOfGens.length; i++) {
             let interimArray = [];
             for (let j = 0; j < this.arrayOfGens.length; j++) {
-                let x = computeDistance(this.arrayOfGens[i], this.arrayOfGens[j]);
+                let x = distanceMetric(this.arrayOfGens[i], this.arrayOfGens[j]);
                 interimArray.push(x);
             }
             this.distancesBtwGens.push(interimArray);
@@ -162,48 +169,55 @@ class GeneticAlgorithm {
         }
     }
 
-    swapMutation(array) {
-        // swaps random gens in current chromosome
-        let index1, index2;
-        while (index2 === index1) {
-            index1 = Math.floor(Math.random() * array.length)
-            index2 = Math.floor(Math.random() * array.length)
-        }
+    swapMutation(array, index1, index2) {
+        // swaps index1 and index2 gens in current chromosome
         [array[index1], array[index2]] = [array[index2], array[index1]]
     }
 
-    inversionMutation(array) {
-        let index1, index2;
-        while ((index2 === index1)) {
-            index1 = Math.floor(Math.random() * array.length)
-            index2 = Math.floor(Math.random() * array.length)
-        }
-        if (index1 > index2) {
-            [index2, index1] = [index1, index2];
-        }
+    inversionMutation(array, index1, index2) {
+        // inverse elements between index1 and index2
         for (let i = index1, j = index2; j >= i; i++, j--) {
             [array[j], array[i]] = [array[i], array[j]]
         }
     }
 
-    // scrambleMutation(array){
-    //     let index1, index2;
-    //         while ((index2 === index1)) {
-    //             index1 = Math.floor(Math.random() * array.length)
-    //             index2 = Math.floor(Math.random() * array.length)
-    //         }
-    //         if (index1 > index2) {
-    //             [index2, index1] = [index1, index2];
-    //         }
-    // }
-    // Надо дописать скрэмбл и написать что-то вроде random mutation, который будет выбирать из того, что есть
-    mutations(typeOfMutation) {
+    scrambleMutation(array, index1, index2) {
+        // shuffle elements between index1 and index2
+        let currentIndex = index2, randomIndex;
+        while (currentIndex != index1) {
+            randomIndex = index1 + Math.floor(Math.random() * (currentIndex - index1));
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+    }
 
+    randomMutation(array, index1, index2) {
+        // choose with random chance swap, inversion or scramble mutation
+        let random = Math.random();
+        if (random < 0.333333334) {
+            this.swapMutation(array, index1, index2);
+        } else if (random < 0.666666667) {
+            this.scrambleMutation(array, index1, index2);
+        } else {
+            this.inversionMutation(array, index1, index2);
+        }
+    }
+
+    mutations(typeOfMutation) {
         for (let i = 0; i < this.population.length; i++) {
             if (Math.random() > mutation_rate) {
                 continue;
             }
-            typeOfMutation(this.population[i]);
+            let index1, index2;
+            while ((index2 === index1)) {
+                index1 = Math.floor(Math.random() * this.population[i].length)
+                index2 = Math.floor(Math.random() * this.population[i].length)
+            }
+            if (index1 > index2) {
+                [index2, index1] = [index1, index2];
+            }
+            typeOfMutation(this.population[i], index1, index2);
         }
     }
 
@@ -233,7 +247,7 @@ class GeneticAlgorithm {
         }
         while (!conditionToStop(currentGeneration)) {
             this.crossing();
-            this.mutations(this.inversionMutation)
+            this.mutations(this.mutationTypes[mutationType]);
             this.selection();
             let bestPopulationDistance = this.calcDistance(this.population[0]);
             if (bestPopulationDistance < this.bestDistance) {
@@ -244,10 +258,23 @@ class GeneticAlgorithm {
                 canvas.restorePoints(dataArray);
             }
             currentGeneration++;
-
         }
     }
 }
+
+
+function computeSquareEuclidDistance(point1, point2) {
+    return (point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2
+}
+
+function computeManhattanDistance(point1, point2) {
+    return (Math.abs(point1.x - point2.x) + Math.abs(point2.y - point1.y))
+}
+
+function computeChebyshevDistance(point1, point2) {
+    return (Math.max(Math.abs(point1.x - point2.x), Math.abs(point2.y - point1.y)))
+}
+
 
 function putPointByClick(event) {
     let x = event.offsetX;
@@ -272,7 +299,6 @@ function inputRange(id) {
             break;
     }
     console.log(`Изменен ${id} range`);
-    console.log(population_length, generation_number, mutation_rate);
 }
 
 function checkPoints() {
@@ -284,14 +310,29 @@ function checkPoints() {
     }
 }
 
-function computeEuclidDistance(point1, point2) {
-    return (point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2
+function checkRadioButtons(name) {
+    let radioButtons = document.getElementsByName(name)
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            switch (name) {
+                case "mutation" :
+                    mutationType = radioButton.value;
+                    break;
+                case "metric":
+                    distanceMetric = radioButton.value;
+                    break;
+            }
+            break;
+        }
+    }
 }
+
 
 function startGenAlgorithm() {
     if (checkPoints()) {
         return;
     }
+    checkRadioButtons("mutationType")
     document.getElementById('Start').textContent = "Restart";
     if (is_started) {
         canvas.clearField();
@@ -325,9 +366,16 @@ window.addEventListener('resize', function () {
     clearAll();
 }, false);
 window.onload = canvas.resize.bind(canvas);
+let is_started = false;
+let dataArray = [];
+metricTypes = {
+    "euclid": computeSquareEuclidDistance,
+    "chebyshev": computeChebyshevDistance,
+    "manhattan": computeManhattanDistance,
+}
+let distanceMetric = "euclid"
+let mutationType = "random"
 let mutation_rate = 0.2;
 let population_length = 20;
 let generation_number = 20;
-let dataArray = [];
-let is_started = false;
 

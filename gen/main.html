@@ -59,6 +59,17 @@
                                    step="1"
                                    oninput="inputRange('mutation')">
                         </div>
+                        <div id="mutationTypes" class="radioButtons-container">
+                            <label for="swap"><input class="radiobutton" type="radio" id="swap" name="mutation" value="swap" >Swap Mutation</label>
+                            <label for="inversion"><input class="radiobutton" type="radio" id="inversion" name="mutation" value="inversion">Inversion Mutation</label>
+                            <label for="scramble"><input class="radiobutton" type="radio" id="scramble" name="mutation" value="scramble">Scramble Mutation</label>
+                            <label for="random"><input class="radiobutton" type="radio" id="random" name="mutation" value="random" checked>Random Mutation</label>
+                        </div>
+                        <div id="distanceMetricTypes" class="radioButtons-container">
+                            <label for="euclid"><input class="radiobutton" type="radio" id="euclid" name="metric" value="euclid" checked>Euclid Square Metric</label>
+                            <label for="chebyshev"><input class="radiobutton" type="radio" id="chebyshev" name="metric" value="chebyshev">Chebyshev Metric</label>
+                            <label for="manhattan"><input class="radiobutton" type="radio" id="manhattan" name="metric" value="manhattan">Manhattan Metric</label>
+                        </div>
                     </div>
                 </div>
             </div>

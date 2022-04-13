@@ -32,7 +32,7 @@ class Cell {
     }
 }
 
-document.querySelector('table').addEventListener("mouseup", function () {
+document.querySelector('body').addEventListener("mouseup", function () {
     isMouseDown = false;
 })
 
@@ -234,6 +234,7 @@ function pressOneCellEvent(target) {
                         startCords.x = col;
                         startCords.y = row;
                     } else {
+                        isMouseDown = false;
                         alert("This is the wall!");
                     }
                 } else {
@@ -250,6 +251,7 @@ function pressOneCellEvent(target) {
                         startCords.y = row;
                         console.log(startCords.x + "  " + startCords.y)
                     } else {
+                        isMouseDown = false;
                         alert("This is the wall!");
                     }
                 }
@@ -265,6 +267,7 @@ function pressOneCellEvent(target) {
                         finishCords.x = col;
                         finishCords.y = row;
                     } else {
+                        isMouseDown = false;
                         alert("This is the wall!");
                     }
                 } else {
@@ -280,6 +283,7 @@ function pressOneCellEvent(target) {
                         finishCords.x = col;
                         finishCords.y = row;
                     } else {
+                        isMouseDown = false;
                         alert("This is the wall!");
                     }
                 }
@@ -312,11 +316,11 @@ function changeButtonsEnabling(mode) {
     let buttons = document.querySelectorAll("button")
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].disabled = !!mode;
-
     }
+    lastButton = "";
     let ranges = document.querySelectorAll("input")
     for (let i = 0; i < ranges.length; i++) {
-        if (ranges[i].id != "speedRange") {
+        if (ranges[i].id !== "speedRange") {
             ranges[i].disabled = !!mode;
         }
     }

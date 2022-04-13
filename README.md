@@ -1,2 +1,2 @@
-# DifferentAlgorithmesFrontend
-Visualization of different algorithmes
+# DifferentAlgorithmsFrontend
+Visualization of different algorithms

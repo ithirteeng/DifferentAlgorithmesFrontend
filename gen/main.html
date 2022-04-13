@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Генетический алгоритм</title>
+    <script src="src/scripts/main.js" defer></script>
+    <link rel="stylesheet" href="../src/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../src/css/index.css">
+    <link rel="stylesheet" href="src/css/main.css">
+
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <a href="../index.html" title="гугл">
+                <div class="header__logo"></div>
+            </a>
+            <nav class="nav">
+                <a class="nav__link" href="">Муравьиный алгоритм</a>
+                <a class="nav__link" href="">Генетический алгоритм</a> <!-- Это отсюда надо убрать -->
+                <a class="nav__link" href="../A-star/main.html">Алгоритм А*</a>
+                <a class="nav__link" href="../clusterization/main.html">Кластеризация</a>
+                <a class="nav__link" href="../Neural/main.html">Нейронная сеть</a>
+                <a class="nav__link" href="" title="Дерево">Дерево решений</a>
+            </nav>
+        </div>
+    </div>
+</header>
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="canvas" id="canvas">
+                    <canvas id="canvas_1">Ваш браузер не поддерживает canvas</canvas>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="userOptions">
+                    <div class="buttons-container">
+                        <button id="Start" class="buttons" onclick="startGenAlgorithm()">Start</button>
+                        <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
+                    </div>
+                    <div class="preferences">
+                        <div id="generationNumber" class="RangeViewer">
+                            <p id="generationCounter" class="RangeText">Количество поколений: 20</p>
+                            <input class="Range" id="generationRange" type="range" min="1" max="2000" value="20"
+                                   oninput="inputRange('generation')">
+                        </div>
+                        <div id="populationLength" class="RangeViewer">
+                            <p id="populationCounter" class="RangeText">Размер популяции: 20</p>
+                            <input class="Range" id="populationRange" type="range" min="10" max="2000" value="20"
+                                   step="10"
+                                   oninput="inputRange('population')">
+                        </div>
+                        <div id="mutationRate" class="RangeViewer">
+                            <p id="mutationCounter" class="RangeText">Шанс мутации: 20%</p>
+                            <input class="Range" id="mutationRange" type="range" min="0" max="100" value="20"
+                                   step="1"
+                                   oninput="inputRange('mutation')">
+                        </div>
+                        <div id="mutationTypes" class="radioButtons-container">
+                            <label for="swap"><input class="radiobutton" type="radio" id="swap" name="mutation" value="swap" >Swap Mutation</label>
+                            <label for="inversion"><input class="radiobutton" type="radio" id="inversion" name="mutation" value="inversion">Inversion Mutation</label>
+                            <label for="scramble"><input class="radiobutton" type="radio" id="scramble" name="mutation" value="scramble">Scramble Mutation</label>
+                            <label for="random"><input class="radiobutton" type="radio" id="random" name="mutation" value="random" checked>Random Mutation</label>
+                        </div>
+                        <div id="distanceMetricTypes" class="radioButtons-container">
+                            <label for="euclid"><input class="radiobutton" type="radio" id="euclid" name="metric" value="euclid" checked>Euclid Square Metric</label>
+                            <label for="chebyshev"><input class="radiobutton" type="radio" id="chebyshev" name="metric" value="chebyshev">Chebyshev Metric</label>
+                            <label for="manhattan"><input class="radiobutton" type="radio" id="manhattan" name="metric" value="manhattan">Manhattan Metric</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

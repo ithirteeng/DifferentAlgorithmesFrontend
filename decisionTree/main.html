@@ -14,17 +14,34 @@
 <section class="sectionSetting">
 	<div class="table-container">
 		<div class="mainTree">
-
 			<div class="tree">
 				<ul id="treeStart">
-
 				</ul>
-
 			</div>
 		</div>
 	</div>
 	<div class="settings-container">
-
+		<div class="mainCont">
+			<div class="csvContainer">
+				<input type="file" id="fileEntry" accept=".csv" class="input_file" onclick="this.value = null">
+				<label class="fileWrapper" for="fileEntry">
+					<div class="choseFileButton" id="chooseFileButton">Choose File</div>
+					<div class="unchosenFile" id="fileName">File isn't chosen</div>
+				</label>
+				<textarea class="textAreaClass" placeholder="Please, input dataset" id="inputDataset"></textarea>
+			</div>
+			<div class="buttonsContainer">
+				<button id="buttonClear" class="buttons">Clear All</button>
+				<button id="showResultButton" class="buttons lowerButtons">Show Result</button>
+				<button id="buildTree" class="buttons lowerButtons">Build Tree</button>
+			</div>
+		</div>
+		<div class="resultText">
+			<p>Result:</p>
+		</div>
+		<div class="resultViewer">
+			<p id="result"></p>
+		</div>
 	</div>
 </section>
 <script src="tree.js"></script>

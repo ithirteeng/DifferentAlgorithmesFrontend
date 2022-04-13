@@ -140,7 +140,7 @@ body {
     height: 75vh;
 }
 
-.buttons {
+.choseFileButton {
     cursor: pointer;
     margin: 20px;
     height: 50px;
@@ -150,7 +150,7 @@ body {
     background: aqua;
     border-radius: 10px;
 }
-.buttons:hover {
+.choseFileButton:hover {
     background: blueviolet;
 }
 

@@ -229,7 +229,6 @@ class Tree {
         let stack = [];
         stack.push(this.root);
         while (stack.length !== 0) {
-            console.log(stack)
             let variants = this.getUniqueNames(stack[0].name, stack[0].data);
             for (let i = 0; i < variants.length; i++) {
                 let splitMatrix = this.splitData(stack[0].name, variants[i], stack[0].data);

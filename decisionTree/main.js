@@ -1,23 +1,11 @@
-let stringData = parseCSV( "Соперник,Играем,Лидеры,Дождь,Победа\n" +
-    "Выше,Дома,На месте,Идет,Нет\n" +
-    "Выше,Дома,На месте,Не Идет,Да\n" +
-    "Выше,Дома,Пропускают,Не Идет,Нет\n" +
-    "Ниже,Дома,Пропускают,Не Идет,Да\n" +
-    "Ниже,В гостях,Пропускают,Не Идет,Нет\n" +
-    "Ниже,Дома,Пропускают,Идет,Да\n" +
-    "Выше,В гостях,На месте,Идет,Нет\n" +
-    "Ниже,В гостях,На месте,Не Идет,Да"
-);
+let isFileChosen = false;
+let isBuilt = false;
+let data;
+let tree = new Tree(new Node());
 
-let node = new Node();
-let tree = new Tree(node);
-
-console.log("works");
-
-let mainTree = document.getElementById("treeStart");
-tree.id3Algorithm(stringData);
-
-drawTree(tree.root, mainTree);
+inputFileEvent();
+buildTreeEvent();
+clearAllEvent();
 
 function drawTree(node, treeEl) {
     let li = document.createElement("li");
@@ -40,6 +28,96 @@ function drawTree(node, treeEl) {
     for (let i = node.branches.length - 1; i >= 0; i--) {
         drawTree(node.branches[i], ul);
     }
+}
 
+function inputFileEvent() {
+    let input = document.getElementById("fileEntry");
+    let inputButton = document.getElementById("chooseFileButton");
+    inputButton.addEventListener("mousedown", function () {
+        if (isBuilt) {
+            alert("If you want to rebuild the tree, please press \"Clear All\" button.");
+        }
+    });
+    if (!isBuilt) {
+        input.onchange = function () {
+            document.getElementById("fileName").textContent = this.files.item(0).name;
+            isFileChosen = true;
+            disableInput(true);
+        }
+    }
 
 }
+
+function disableInput(flag) {
+    let textArea = document.getElementById("inputDataset");
+    if (flag) {
+        textArea.placeholder = "You can't input dataset!"
+        textArea.value = "";
+        textArea.disabled = true;
+    } else {
+        textArea.placeholder = "Please, input dataset"
+        textArea.disabled = false;
+    }
+}
+
+function buildTreeEvent() {
+    document.getElementById("buildTree").addEventListener("click", function () {
+        if (isBuilt) {
+            alert("If you want to rebuild the tree, please press \"Clear All\" button.");
+        } else {
+            isBuilt = true;
+            let root = document.getElementById("treeStart");
+            while (root.hasChildNodes()) {
+                root.removeChild(root.firstChild);
+            }
+            let textArea = document.getElementById("inputDataset");
+            if (isFileChosen) {
+                let file = document.getElementById("fileEntry").files[0];
+                let reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = function () {
+                    data = parseCSV(reader.result);
+                    tree.id3Algorithm(data);
+
+                    let treeRoot = document.getElementById("treeStart");
+                    drawTree(tree.root, treeRoot);
+                    tree = new Tree(new Node());
+                    textArea.placeholder = "Please, input the path"
+                }
+                disableInput(false);
+            } else {
+                if (textArea.value === "") {
+                    isBuilt = false;
+                    alert("Please choose the file or input dataset");
+                } else {
+                    data = parseCSV(textArea.value);
+                    tree.id3Algorithm(data);
+
+                    let treeRoot = document.getElementById("treeStart");
+                    drawTree(tree.root, treeRoot);
+                }
+            }
+            tree = new Tree(new Node());
+        }
+
+    });
+}
+
+function clearAllEvent() {
+    document.getElementById("buttonClear").addEventListener("click", function () {
+        isBuilt = false;
+        data = undefined;
+        let root = document.getElementById("treeStart");
+        while (root.hasChildNodes()) {
+            root.removeChild(root.firstChild);
+        }
+
+        document.getElementById("fileName").textContent = "File isn't chosen";
+        isFileChosen = false;
+
+        let textArea = document.getElementById("inputDataset");
+        textArea.value = "";
+        disableInput(false);
+    });
+}
+

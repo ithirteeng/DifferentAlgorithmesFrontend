@@ -13,11 +13,11 @@
 <header class="header">
     <div class="container">
         <div class="header__inner">
-            <a href="../index.html" title="гугл">
+            <a href="../index.html" title="Главная страница">
                 <div class="header__logo"></div>
             </a>
             <nav class="nav">
-                <a class="nav__link" href="" title="">Муравьиный алгоритм</a>
+                <a class="nav__link" href="">Муравьиный алгоритм</a>
                 <a class="nav__link" href="../gen/main.html" title="">Генетический алгоритм</a>
                 <a class="nav__link" href="../A-star/main.html" title="">Алгоритм А*</a>
                 <a class="nav__link" href="" title="You're here!">Кластеризация</a>
@@ -37,16 +37,92 @@
             </div>
             <div class="col-lg-6 col-md-12">
                 <div class="container-settings">
-                    <button id="Start K-means" class="buttons" onclick="startKMeans()">
-                        Start
-                    </button>
-                    <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
-                    <input type="color" id="color" oninput="inputColor()">
-                    <input type="text" id="clusterCounter" value="2" oninput="inputRangeByText()">
-                    <input id="clustersNumber" type="range" min="1" max="20" value="2" class="range"
-                           oninput="inputRange()">
+                    <p class="clustering-title" id="KMeans-title">K means</p>
+                    <div id="KMeans-settings" class="clusteringField-settings">
+                        <button id="Start K-means" class="buttons" onclick="startKMeans()">Start</button>
+                        <button id="showKMeans-settings" class="buttons" onclick="showSettings('KMeans')">Settings
+                        </button>
+                        <div class="clusters-field" id="KMeans-clusters">
+
+                        </div>
+                        <div class="dropContainer-settings" id="KMeans-Drop-settings">
+                            <div class="metricRadioButtons-container">
+                                <div class="closeModel" onclick="showSettings('KMeans')"></div>
+                                <p class="headerSETTINGS">SETTINGS</p>
+                                <p class="setting-title">Metric of distance</p>
+                                <label for="euclid-KMeans"><input class="radiobutton" type="radio" id="euclid-KMeans"
+                                                                  name="KMeansMetric"
+                                                                  value="euclid" checked>Euclid Square Metric</label>
+                                <label for="chebyshev-KMeans"><input class="radiobutton" type="radio"
+                                                                     id="chebyshev-KMeans"
+                                                                     name="KMeansMetric"
+                                                                     value="chebyshev">Chebyshev Metric</label>
+                                <label for="manhattan-KMeans"><input class="radiobutton" type="radio"
+                                                                     id="manhattan-KMeans"
+                                                                     name="KMeansMetric"
+                                                                     value="manhattan">Manhattan Metric</label>
+                            </div>
+                            <p class="checkboxLabel">Show Centroids <input class="checkbox" type="checkbox"
+                                                                           id="KMeansShowCentroids"></p>
+                            <p id="KMeans-cluster-numberCounter">Amount of clusters: 2</p>
+                            <input id="KMeans-cluster-numberRange" type="range" min="1" max="20" value="2" class="range"
+                                   oninput="inputRange('KMeans-cluster-number')">
+
+
+                        </div>
+                    </div>
                     <br>
-                    <button id="Start AGNES" class="buttons" onclick="startAGNES()">Start</button>
+                    <p class="clustering-title" id="AGNES-title">Agglomerative Nesting</p>
+                    <div id="AGNES-settings" class="clusteringField-settings">
+                        <button id="Start AGNES" class="buttons" onclick="startAGNES()">Start</button>
+                        <button id="showAGNES-settings" class="buttons" onclick="showSettings('AGNES')">Settings
+                        </button>
+                        <div class="clusters-field" id="AGNES-clusters">
+
+                        </div>
+                        <div class="dropContainer-settings" id="AGNES-Drop-settings">
+
+                            <div class="closeModel" onclick="showSettings('AGNES')"></div>
+                            <p class="headerSETTINGS">SETTINGS</p>
+                            <div class="metricRadioButtons-container">
+                                <p class="setting-title">Metric of distance</p>
+                                <label for="euclid-AGNES"><input class="radiobutton" type="radio" id="euclid-AGNES"
+                                                                 name="AGNESMetric"
+                                                                 value="euclid" checked>Euclid Square Metric</label>
+                                <label for="chebyshev-AGNES"><input class="radiobutton" type="radio"
+                                                                    id="chebyshev-AGNES"
+                                                                    name="AGNESMetric"
+                                                                    value="chebyshev">Chebyshev Metric</label>
+                                <label for="manhattan-AGNES"><input class="radiobutton" type="radio"
+                                                                    id="manhattan-AGNES"
+                                                                    name="AGNESMetric"
+                                                                    value="manhattan">Manhattan Metric</label>
+                            </div>
+                            <div class="metricRadioButtons-container">
+                                <p class="setting-title">Distance between clusters</p>
+                                <label for="Min distance"><input class="radiobutton" type="radio" id="Min distance"
+                                                                 name="AGNESDistanceBtwClusters"
+                                                                 value="Min" checked>Min distance</label>
+                                <label for="Max distance"><input class="radiobutton" type="radio" id="Max distance"
+                                                                 name="AGNESDistanceBtwClusters"
+                                                                 value="Max">Max distance</label>
+                                <label for="Avg distance"><input class="radiobutton" type="radio" id="Avg distance"
+                                                                 name="AGNESDistanceBtwClusters"
+                                                                 value="Average">Average distance</label>
+                            </div>
+                            <p class="checkboxLabel">Show Centroids <input class="checkbox" type="checkbox"
+                                                                           id="AGNESShowCentroids">
+                            </p>
+                            <p id="AGNES-cluster-numberCounter">Amount of clusters: 2</p>
+                            <input id="AGNES-cluster-numberRange" type="range" min="1" max="20" value="2" class="range"
+                                   oninput="inputRange('AGNES-cluster-number')">
+
+                        </div>
+                    </div>
+                    <br>
+                    <div id="anotherOptions" class="clusteringField-settings">
+                        <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
+                    </div>
                 </div>
             </div>
         </div>

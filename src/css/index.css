@@ -18,23 +18,18 @@ body {
 }
 
 .header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     z-index: 1000;
-    margin-bottom: 20px;
 }
 
 .container {
-    width: 90%;
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 }
 
+
 .header__inner {
     padding-top: 30px;
-    padding-bottom: 30px;
     display: flex;
     /*padding: 10px;*/
     justify-content: space-between;
@@ -42,7 +37,7 @@ body {
 }
 
 .header__logo {
-    background: transparent center/100% url("../img/logo.png");
+    background: transparent center/100% url("../../../src/img/logo.png");
     background-size: cover;
     max-width: 60px;
     max-height: 37px;
@@ -95,6 +90,7 @@ body {
     color: #fce38e;
     opacity: 1;
 }
+
 
 .main {
     font-size: 30px;

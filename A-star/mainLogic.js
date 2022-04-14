@@ -1,4 +1,5 @@
 import {createMaze} from "./createMaze.js";
+
 alert("Настройте громкость звука")
 playMusic()
 
@@ -31,6 +32,7 @@ class Cell {
         this.y = y;
     }
 }
+
 
 document.querySelector('body').addEventListener("mouseup", function () {
     isMouseDown = false;
@@ -65,6 +67,10 @@ metricsDetermination();
 buttonEventListener();
 matrixCreation();
 makeRandomMatrix();
+rangeViewer()
+buttonEventListener()
+matrixCreation()
+makeRandomMatrix()
 await startFindingPath();
 
 // Внешний вид
@@ -75,7 +81,7 @@ function rangeViewer() {
     document.getElementById("random").addEventListener("input", function () {
         document.getElementById("randomRangeViewer").textContent = document.getElementById("random").value;
     });
-    document.getElementById("speedRange").addEventListener("input", function() {
+    document.getElementById("speedRange").addEventListener("input", function () {
         let string = document.getElementById("speedViewer").textContent;
         let counter = string.length - 1;
         while (string[counter] !== " ") {
@@ -87,7 +93,6 @@ function rangeViewer() {
         document.getElementById("speedViewer").textContent = string;
     })
 }
-
 
 // Создание матрицы + ее обновление
 function matrixCreation() {
@@ -141,7 +146,7 @@ function createTableMatrix() {
                 pressOneCellEvent(element);
             });
             element.addEventListener("mouseover", function () {
-                if(isMouseDown) {
+                if (isMouseDown) {
                     pressOneCellEvent(element);
                 }
             })
@@ -329,7 +334,7 @@ function changeButtonsEnabling(mode) {
 function metricsDetermination() {
     let radios = document.querySelectorAll('input[type=radio]');
     for (let i = 0; i < radios.length; i++) {
-        radios[i].addEventListener("click", function() {
+        radios[i].addEventListener("click", function () {
             if (radios[i].checked) {
                 metrics = radios[i].value;
                 console.log(metrics);
@@ -383,7 +388,6 @@ function drawMaze() {
 }
 
 
-
 //Алгоритм
 let index = 0;
 let breakFlag = false;
@@ -401,15 +405,15 @@ function getDistance(firstPosition, secondPosition) {
         dist = Math.max(Math.abs(firstPosition.x - secondPosition.x), Math.abs(firstPosition.y - secondPosition.y));
     }
     return dist;
-}
 
-function isClosed(temp) {
-    for (let i = 0; i < closeList.length; i++) {
-        if (temp.x === closeList[i].x && temp.y === closeList[i].y) {
-            return true;
+    function isClosed(temp) {
+        for (let i = 0; i < closeList.length; i++) {
+            if (temp.x === closeList[i].x && temp.y === closeList[i].y) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
 }
 
 function isOpened(temp) {

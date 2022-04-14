@@ -17,7 +17,8 @@ body {
     box-sizing: border-box;
 
 }
-
+.header__logo {
+    background: transparent center/100% url("../../../src/img/logo.png");}
 
 
 .main {

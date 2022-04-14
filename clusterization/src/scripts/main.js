@@ -22,53 +22,18 @@ class Canvas {
         console.log(`CANVAS PROPERTIES\n    Width: ${canvas.width}\n    Height: ${canvas.height}`)
     }
 
-    drawCirclePoint(point, color, map) {
-        console.log(map);
-        let ctx = map.context;
-        ctx.beginPath();
-        ctx.strokeStyle = myColor;
-        ctx.lineWidth = 8;
-        ctx.fillStyle = color;
-        let radius = 10;
-        ctx.arc(point.x + 3, point.y + 4, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-        ctx.fillStyle = 'black';
-    }
-    drawCirclePoint(point, color) {
+    drawCirclePoint(point, color, startR = 0, endR = 2) {
+        // draw Circle or arc from startR to endR with current color
+        // to draw full circle startR = 0, endR = 2
+        // to draw left half startR = 1/2, endR = -1/2
+        // to draw right half startR = 3/2, endR = 1/2
         let ctx = this.context;
         ctx.beginPath();
-        ctx.strokeStyle = myColor;
+        ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 8;
         ctx.fillStyle = color;
         let radius = 10;
-        ctx.arc(point.x + 3, point.y + 4, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-        ctx.fillStyle = 'black';
-    }
-
-    drawRightHalfCirclePoint(point, color) {
-        let ctx = this.context;
-        ctx.beginPath();
-        ctx.strokeStyle = myColor;
-        ctx.lineWidth = 8;
-        ctx.fillStyle = color;
-        let radius = 10;
-        ctx.arc(point.x + 3, point.y + 4, radius, Math.PI * 3 / 2, Math.PI / 2);
-        ctx.stroke();
-        ctx.fill();
-        ctx.fillStyle = 'black';
-    }
-
-    drawLeftHalfCirclePoint(point, color) {
-        let ctx = this.context;
-        ctx.beginPath();
-        ctx.strokeStyle = myColor;
-        ctx.lineWidth = 8;
-        ctx.fillStyle = color;
-        let radius = 10;
-        ctx.arc(point.x + 3, point.y + 4, radius, Math.PI * 1 / 2, Math.PI * -1 / 2);
+        ctx.arc(point.x + 3, point.y + 4, radius, startR * Math.PI, endR * Math.PI);
         ctx.stroke();
         ctx.fill();
         ctx.fillStyle = 'black';
@@ -87,44 +52,26 @@ class Canvas {
 
 }
 
-class Silhouette {
-    // Silhouette Coefficient Method. Based on K-means
-    constructor(dataArray) {
-        this.pointsArr = JSON.parse(JSON.stringify(dataArray));
-    }
-
-    solve() {
-        for (let i = 2; i <= 12; i++) {
-            let k_means = new KMeans(i, this.pointsArr, false);
-            k_means.identify_clusters();
-            k_means.clustering();
-
-        }
-    }
-}
-
 class KMeans {
-    // In constructor independence means which way you use algorithm.
-    // False, if inside another algorithm(like Silhouette)
-    constructor(dataArray, clusters_number, independence = true) {
+    constructor(dataArray) {
         this.points = JSON.parse(JSON.stringify(dataArray));
-        this.clusters_number = clusters_number;
         this.centroids = [];
         this.prevCentroids = [];
-        this.independence = independence;
+        this.showCentroids = (document.getElementById("KMeansShowCentroids").checked)
+        this.computeDistanceFunction = distanceMetrics[checkRadioButtons("KMeansMetric")]
         this.identify_clusters();
+        this.clustering();
     }
 
     change_points_cluster() {
         for (let i = 0; i < this.points.length; i++) {
-            for (let j = 0; j < this.clusters_number; j++) {
-                let distance = computeEuclidDistance(this.points[i], this.centroids[j])
+            for (let j = 0; j < clusters_number_KMeans; j++) {
+                let distance = this.computeDistanceFunction(this.points[i], this.centroids[j])
                 if (distance < this.points[i].minDistance) {
                     this.points[i].minDistance = distance;
                     this.points[i].cluster = j;
-                    if (this.independence) {
-                        canvas.drawCirclePoint(this.points[i], this.centroids[j].color) // redraws point with new color
-                    }
+                    // if agnes is started this draws left half else full circle
+                    agnes_is_started ? canvas.drawCirclePoint(this.points[i], this.centroids[j].color, 1 / 2, -1 / 2) : canvas.drawCirclePoint(this.points[i], this.centroids[j].color)
                 }
             }
         }
@@ -132,7 +79,7 @@ class KMeans {
 
     identify_clusters() {
 
-        for (let i = 0; i < this.clusters_number; i++) {
+        for (let i = 0; i < clusters_number_KMeans; i++) {
             let centroid = {
                 x: Math.round((canvas.width - 40) * Math.random() + 1),
                 y: Math.round((canvas.height - 40) * Math.random() + 1),
@@ -141,7 +88,7 @@ class KMeans {
                 meanDistance: -1,
             };
             this.centroids.push(centroid);
-            if (this.independence) {
+            if (this.showCentroids) {
                 canvas.drawTrianglePoint(centroid, colorsKMeans[i]);
             }
         }
@@ -154,6 +101,7 @@ class KMeans {
         while (!compareArr(this.prevCentroids, this.centroids) && counter++ <= MAX_ITERATIONS) {
             this.prevCentroids = JSON.parse(JSON.stringify(this.centroids))
             restore();
+            agnes_is_started ? startAGNES() : 0;
             this.centroids.forEach(item => {
                 item.x = 0;
                 item.y = 0;
@@ -174,7 +122,7 @@ class KMeans {
                     item.x = Math.round(item.x / item.pointsAmount);
                     item.y = Math.round(item.y / item.pointsAmount);
                 }
-                if (this.independence) {
+                if (this.showCentroids) {
                     canvas.drawTrianglePoint(item, item.color);
                 }
             });
@@ -190,18 +138,19 @@ class KMeans {
 }
 
 class AGNES {
-    constructor(dataArray, clusters_number, distMethod) {
+    constructor(dataArray) {
         this.points = dataArray.map(item => {
             return {x: item.x, y: item.y}
         });
+        this.computeDistanceBtwClustersFunctions = {"Min": dist_min, "Max": dist_max, "Average": dist_avg}
+        this.showCentroids = (document.getElementById("AGNESShowCentroids").checked)
         this.centroids = [];
-        this.clusters_number = clusters_number;
         this.distances = [];
-        this.dist = distMethod;
+        this.computeDistanceFunction = distanceMetrics[checkRadioButtons("AGNESMetric")];
+        this.computeDistanceBtwClustersFunction = this.computeDistanceBtwClustersFunctions[checkRadioButtons("AGNESDistanceBtwClusters")];
         this.initialize_clusters();
         this.clustering();
-        console.log(canvas.drawCirclePoint);
-        this.drawPoints(k_means_is_started? canvas.drawRightHalfCirclePoint.bind(canvas) : canvas.drawCirclePoint.bind(canvas));
+        this.drawPoints();
     }
 
     initialize_clusters() {
@@ -215,15 +164,15 @@ class AGNES {
         this.centroids.forEach(item_i => {
             let distances_i = [];
             this.centroids.forEach(item_j => {
-                distances_i.push(this.dist(item_i, item_j));
-            })
+                distances_i.push(this.computeDistanceBtwClustersFunction(item_i, item_j, this.computeDistanceFunction));
+            }, this)
             this.distances.push(distances_i);
-        })
+        }, this)
     }
 
     clustering() { // Возможно можно вставить сюда инициализацию кластеров и вызывать методы прямо в конструкторе? Но хз
         let N = this.points.length;
-        while (N > this.clusters_number) {
+        while (N > clusters_number_AGNES) {
             let result = this.find_min(this.distances)
             let i = result.min_i;
             let j = result.min_j;
@@ -237,7 +186,7 @@ class AGNES {
     }
 
     find_min(arr) {
-        let min = 99999999;
+        let min = Infinity;
         let min_i = 0;
         let min_j = 0;
         for (let i = 0; i < arr.length; i++) {
@@ -252,32 +201,32 @@ class AGNES {
         return {min_i, min_j, min};
     }
 
-    drawPoints(drawPointFunction) {
-        console.log(this.centroids);
+    drawPoints() {
         this.centroids.forEach(function (item, index) {
-            console.log(this.width);
             let centroid = {x: 0, y: 0, pointsNumber: 0, color: colorsShiftMeans[index]}
             item.forEach(point => {
-                console.log("Ширина равна = " + this.width);
-                drawPointFunction(point, centroid.color, this);
+                // if k_means is started this draws right half else full circle
+                k_means_is_started ? canvas.drawCirclePoint(point, centroid.color, 3 / 2, 1 / 2) : canvas.drawCirclePoint(point, centroid.color);
                 centroid.x += point.x;
                 centroid.y += point.y;
                 centroid.pointsNumber++;
             }, this);
             centroid.x /= centroid.pointsNumber;
             centroid.y /= centroid.pointsNumber;
-            canvas.drawTrianglePoint(centroid, centroid.color, this);
-        }, canvas);
+            if (this.showCentroids) {
+                canvas.drawTrianglePoint(centroid, centroid.color);
+            }
+        }, this);
     }
 
 
 }
 
-function dist_min(arri, arrj) {
-    let min = 99999999999;
-    for (let i = 0; i < arri.length; i++) {
-        for (let j = 0; j < arrj.length; j++) {
-            let distance = computeEuclidDistance(arri[i], arrj[j]);
+function dist_min(arrI, arrJ, distMetric) {
+    let min = Infinity;
+    for (let i = 0; i < arrI.length; i++) {
+        for (let j = 0; j < arrJ.length; j++) {
+            let distance = distMetric(arrI[i], arrJ[j]);
             if (distance < min) {
                 min = distance;
             }
@@ -286,11 +235,11 @@ function dist_min(arri, arrj) {
     return min;
 }
 
-function dist_max(arri, arrj) {
-    let max = -99999999999;
-    for (let i = 0; i < arri.length; i++) {
-        for (let j = 0; j < arrj.length; j++) {
-            let distance = computeEuclidDistance(arri[i], arrj[j]);
+function dist_max(arrI, arrJ, distMetric) {
+    let max = -Infinity;
+    for (let i = 0; i < arrI.length; i++) {
+        for (let j = 0; j < arrJ.length; j++) {
+            let distance = distMetric(arrI[i], arrJ[j]);
             if (distance > max) {
                 max = distance;
             }
@@ -299,59 +248,72 @@ function dist_max(arri, arrj) {
     return max;
 }
 
-function dist_avg(arri, arrj) {
+function dist_avg(arrI, arrJ, distMetric) {
     let avg = 0;
-    for (let i = 0; i < arri.length; i++) {
-        for (let j = 0; j < arrj.length; j++) {
-            let distance = computeEuclidDistance(arri[i], arrj[j]);
+    for (let i = 0; i < arrI.length; i++) {
+        for (let j = 0; j < arrJ.length; j++) {
+            let distance = distMetric(arrI[i], arrJ[j]);
             avg += distance;
         }
     }
-    return avg / (arrj.length * arri.length);
+    return avg / (arrJ.length * arrI.length);
 }
 
 function compareArr(arr1, arr2) {
     return JSON.stringify(arr1) === JSON.stringify(arr2)
 }
 
-function computeEuclidDistance(point1, point2) {
+function computeSquareEuclidDistance(point1, point2) {
     return (point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2
+}
+
+function computeManhattanDistance(point1, point2) {
+    return (Math.abs(point1.x - point2.x) + Math.abs(point2.y - point1.y))
+}
+
+function computeChebyshevDistance(point1, point2) {
+    return (Math.max(Math.abs(point1.x - point2.x), Math.abs(point2.y - point1.y)))
 }
 
 function putPointByClick(event) {
     let x = event.offsetX;
     let y = event.offsetY;
-    canvas.drawCirclePoint({x, y}, 'white');
+    canvas.drawCirclePoint({x, y}, 'white', 0, 2);
     dataArray.push({x, y, minDistance: 99999999, cluster: -1, color: 'white'});
 }
 
-function inputRangeByText() {
-    let rng = document.getElementById("clustersNumber");
-    let counter = document.getElementById('clusterCounter');
-    rng.value = counter.value;
-    clusters_number = parseInt(counter.value);
-    console.log("Изменен range input через text");
-}
-
-function inputRange() {
-    let rng = document.getElementById("clustersNumber");
-    let counter = document.getElementById('clusterCounter');
-    counter.value = rng.value;
-    clusters_number = parseInt(rng.value);
-    console.log("Изменен range input");
-}
-
-function inputColor() {
-    let color = document.getElementById('color');
-    myColor = color.value;
+function inputRange(id) {
+    let rng = document.getElementById(`${id}Range`);
+    let counter = document.getElementById(`${id}Counter`);
+    counter.textContent = counter.textContent.replace(/\d+/, `${rng.value}`);
+    switch (id) {
+        case 'KMeans-cluster-number':
+            clusters_number_KMeans = parseInt(rng.value);
+            break;
+        case 'AGNES-cluster-number':
+            clusters_number_AGNES = parseInt(rng.value);
+            break;
+    }
+    console.log(`Изменен ${id} range`);
 }
 
 function checkPoints() {
-    // if CanvasField is clear raises alert
+    // if CanvasField is clear raise alert
     if (dataArray.length === 0) {
         console.log("Точек нет!");
         alert("Поставьте точки!");
         return true;
+    }
+    return false;
+}
+
+function checkRadioButtons(name) {
+    // returns checked radiobutton value of "name" group
+    let radioButtons = document.getElementsByName(name)
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            return radioButton.value;
+        }
     }
 }
 
@@ -361,11 +323,13 @@ function startKMeans() {
     }
     document.getElementById('Start K-means').textContent = "Restart";
     if (k_means_is_started) {
-        restore();
+        if (!agnes_is_started) {
+            canvas.clearField();
+            restore();
+        }
     }
     console.log("Старт K-means");
-    let k_means = new KMeans(dataArray, clusters_number);
-    k_means.clustering();
+    let k_means = new KMeans(dataArray);
     k_means_is_started = true;
 
 }
@@ -376,12 +340,14 @@ function startAGNES() {
     }
     document.getElementById('Start AGNES').textContent = "Restart";
     if (agnes_is_started) {
-        restore();
+        if (!k_means_is_started) {
+            canvas.clearField();
+            restore();
+        }
     }
     console.log("Старт AGNES");
-    let agnes = new AGNES(dataArray, clusters_number, dist_min);
-    // agnes.clustering();
-    agnes.agnes_is_started = true;
+    let agnes = new AGNES(dataArray, dist_min);
+    agnes_is_started = true;
 }
 
 function restore() {
@@ -403,6 +369,14 @@ function clearAll() {
     agnes_is_started = false;
 }
 
+function showSettings(id) {
+    let block = document.getElementById(`${id}-Drop-settings`)
+    if (block.style.display === "block") {
+        block.style.display = "none";
+    } else {
+        block.style.display = "block";
+    }
+}
 
 let canvas = new Canvas('canvas_1', 'container-canvas');
 canvas.canvas.addEventListener('mousedown', function (event) {
@@ -420,10 +394,16 @@ window.addEventListener('resize', function () {
 }, false);
 window.onload = canvas.resize.bind(canvas);
 
-let clusters_number = 2;
+let distanceMetrics = {
+    "euclid": computeSquareEuclidDistance,
+    "manhattan": computeManhattanDistance,
+    "chebyshev": computeChebyshevDistance,
+}
+let clusters_number_AGNES = 2;
+let clusters_number_KMeans = 2;
 let dataArray = [];
 let k_means_is_started = false;
 let agnes_is_started = false;
-let myColor = 'black';
+let strokeColor = 'black';
 const colorsKMeans = ['#ff0000', 'orange', 'yellow', '#00ff00', 'lightskyblue', '#0000ff', 'blueviolet', '#6c9edc', '#9e16a2', '#9c83ff', '#1e62d1', '#deb3b5', '#d69e88', '#af8f47', '#843aaa', '#6a61d6', '#ac2de0', '#b475b7', '#624d4f', '#9eb838'];
 const colorsShiftMeans = ['#5c50f7', '#758d2f', '#3afba3', '#90e031', '#189c57', '#afc08d', '#7212d5', '#49b666', '#1131e5', '#8a9f9a', '#7ab94d', '#ce15d0', '#4777d9', '#1f5b10', '#c724a0', '#974f3a', '#9a2040', '#e13124', '#9ea22f', '#a26860']

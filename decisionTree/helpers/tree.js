@@ -1,5 +1,6 @@
 class Node {
     constructor() {
+        this.htmlElement = null;
         this.criteria = null;
         this.level = 0;
         this.branches = [];

@@ -3,8 +3,8 @@ body {
     font-weight: bold;
     font-size: 20px;
     margin: 0;
-    color: black;
-    background: white no-repeat center/100% fixed url("../../../src/img/bg-image.jpg");
+    color: white;
+    background: black no-repeat center/100% fixed url("../../../src/img/bg-image.jpg");
     background-size: cover;
     height: 100%;
     line-height: 1.6;

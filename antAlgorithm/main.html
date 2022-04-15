@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AnsAlgorithm</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../src/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../src/css/index.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <a href="../index.html" title="Вернуться на главную">
+                <div class="header__logo"></div>
+            </a>
+            <nav class="nav">
+                <a class="nav__link" href="../genAlgorithm/main.html">Генетический алгоритм</a>
+                <a class="nav__link" href="../A-star/main.html">Алгоритм А*</a>
+                <a class="nav__link" href="../clusterization/main.html">Кластеризация</a>
+                <a class="nav__link" href="../Neural/main.html">Нейронная сеть</a>
+                <a class="nav__link" href="../decisionTree/main.html">Дерево решений</a>
+            </nav>
+        </div>
+    </div>
+</header>
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="container-canvas" id="container-canvas">
+                    <canvas id="canvas_1">Ваш браузер не поддерживает canvas</canvas>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="preferences">
+                    <div class="buttons-container">
+                        <button id="Start" class="buttons">Start</button>
+                        <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
+                    </div>
+                    <div id="iterationsNumber" class="RangeViewer">
+                        <p id="iterationsCounter" class="RangeText">Количество итераций: 2000</p>
+                        <input class="Range" id="iterationsRange" type="range" min="10" max="10000" value="2000"
+                               oninput="inputRange('iterations')">
+                    </div>
+                    <div id="pheromoneQ" class="RangeViewer">
+                        <p id="pheromoneQCounter" class="RangeText">Константа добавления феромона: 4</p>
+                        <input class="Range" id="pheromoneQRange" type="range" min="1" max="10" value="4"
+                               step="1"
+                               oninput="inputRange('pheramoneQ')">
+                    </div>
+                    <div id="pheromoneR" class="RangeViewer">
+                        <p id="pheromoneRCounter" class="RangeText">Кол-во остающегося феромона: 65%</p>
+                        <input class="Range" id="pheromoneRRange" type="range" min="51" max="100" value="65"
+                               step="1"
+                               oninput="inputRange('pheramoneR')">
+                    </div>
+                    <div id="beta" class="RangeViewer">
+                        <p id="betaCounter" class="RangeText">степень учета длины ребра: 3</p>
+                        <input class="Range" id="betaRange" type="range" min="1" max="4" value="3"
+                               step="1"
+                               oninput="inputRange('beta')">
+                    </div>
+                    <div id="alfa" class="RangeViewer">
+                        <p id="alfaCounter" class="RangeText">степень учета кол-ва феромона: 1</p>
+                        <input class="Range" id="alfaRange" type="range" min="1" max="4" value="1"
+                               step="1"
+                               oninput="inputRange('alfa')">
+                    </div>
+                    <div id="distanceMetricTypes" class="radioButtons-container">
+                        <label for="euclid"><input class="radiobutton" type="radio" id="euclid" name="metric"
+                                                   value="euclid" checked>Euclid Square Metric</label>
+                        <label for="chebyshev"><input class="radiobutton" type="radio" id="chebyshev" name="metric"
+                                                      value="chebyshev">Chebyshev Metric</label>
+                        <label for="manhattan"><input class="radiobutton" type="radio" id="manhattan" name="metric"
+                                                      value="manhattan">Manhattan Metric</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+

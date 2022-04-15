@@ -2,9 +2,9 @@ body {
     font-family: "Comic Sans MS", monospace;
     font-weight: bold;
     font-size: 20px;
-    color: black;
+    color: white;
     margin: 0;
-    background: white no-repeat center/100% fixed url("../img/bg-image.jpg");
+    background: black no-repeat center/100% fixed url("../img/bg-image.jpg");
     background-size: cover;
     height: 100%;
     line-height: 1.6;

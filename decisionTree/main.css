@@ -1,0 +1,320 @@
+body {
+    font-family: "Comic Sans MS", monospace;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sectionSetting {
+    display: flex;
+    border: 3px solid blue;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+
+}
+
+.table-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid red;
+    margin-left: 60px;
+    margin-right: 30px;
+    width: 1100px;
+    height: 850px;
+    font-size: 25px;
+}
+
+.settings-container {
+    display: block;
+    margin-right: 60px;
+    margin-left: 30px;
+    border: 2px solid red;
+    width: 850px;
+    height: 850px;
+    min-height: 840px;
+    min-width: 840px;
+}
+
+.mainCont {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+}
+
+.csvContainer {
+    margin: 20px;
+    width: 400px;
+    height: 30%;
+}
+
+.inputFileButton {
+    font-size: 25px;
+}
+.input_file {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}
+
+.chooseFileContainer {
+    width: 100%;
+    display: flex;
+}
+
+.fileWrapper {
+    margin-top: 3px;
+    margin-bottom: 20px;
+    margin-right: 25px;
+    width: 35%;
+    height: 50px;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.unchosenFile {
+    margin-right: 0;
+    width: 65%;
+    height: 50px;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: normal;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    color: #4d4d4d;
+}
+
+.chooseFileButton {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: normal;
+    border: 3px solid black;
+    cursor: pointer;
+    height: 50px;
+    width: 100%;
+    font-family: "Comic Sans MS", monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: aqua;
+    border-radius: 10px;
+}
+
+.chooseFileButton:hover {
+    background-color: #c500d9;
+}
+.tree a {
+    background-color: aqua;
+}
+
+a.path {
+    background-color: #9362ee;
+}
+
+.textAreaClass {
+    font-size: 17px;
+    overflow: auto;
+    padding: 8px;
+    width: 95%;
+    height: 100px;
+    border: 3px solid black;
+    border-radius: 10px;
+    resize: none;
+    outline: none;
+}
+.resultText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+}
+
+.resultViewer {
+    margin: 20px;
+    border: 3px solid  black;
+    border-radius: 10px;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150px;
+}
+
+.buttonsContainer {
+    width: 50%;
+    height: 190px;
+    margin: 20px;
+}
+
+.buttons {
+    font-weight: normal;
+    border: 3px solid black;
+    cursor: pointer;
+    height: 50px;
+    width: 100%;
+    font-family: "Comic Sans MS", monospace;
+    font-size: 20px;
+    background: aqua;
+    border-radius: 10px;
+}
+.buttons:hover {
+    background-color: #c500d9;
+}
+
+.lowerButtons {
+    margin-top: 20px;
+}
+
+.tree {
+    width: 100%;
+}
+
+
+.treeContainer {
+    overflow: auto;
+    padding: 50px;
+    height: 700px;
+}
+
+.treeContainer::-webkit-scrollbar {
+    border-radius: 10px;
+    border: 3px solid black;
+    background-color: white;
+}
+.treeContainer::-webkit-scrollbar-thumb {
+    border: 3px solid black;
+    background-color: #868686;
+    border-radius: 10px;
+}
+
+.treeContainer.border {
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+.treeContainer.addBorder {
+    border: 2px solid black;
+}
+
+.tree ul {
+    padding-top: 20px;
+    position: relative;
+    display: flex;
+    white-space: nowrap;
+}
+
+.tree li {
+    float: left;
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 25px 5px 0 5px;
+
+}
+
+/*We will use ::before and ::after to draw the connectors*/
+
+.tree li::before, .tree li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 50%;
+    border-top: 3px solid #000000;
+    width: 50%;
+    height: 25px;
+}
+
+.tree li::after {
+    right: auto;
+    left: 50%;
+    border-left: 3px solid #000000;
+}
+
+/*We need to remove left-right connectors from elements without
+any siblings*/
+.tree li:only-child::after, .tree li:only-child::before {
+    display: none;
+}
+
+/*Remove space from the top of single children*/
+.tree li:only-child {
+    padding-top: 0;
+}
+
+/*Remove left connector from first child and
+right connector from last child*/
+.tree li:first-child::before, .tree li:last-child::after {
+    border: 0 none;
+}
+
+/*Adding back the vertical connector to the last nodes*/
+.tree li:last-child::before {
+    border-right: 3px solid #000000;
+    border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+    border-radius: 5px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+.tree ul ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-left: 3px solid #000000;
+    width: 0;
+    height: 20px;
+}
+
+.tree li a {
+    border: 3px solid #0e0c0c;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #000000;
+    font-family: "Comic Sans MS", monospace;
+    font-size: 15px;
+    display: inline-block;
+
+    border-radius: 5px;
+}
+
+/*Time for some hover effects*/
+/*We will apply the hover effect the the lineage of the element also*/
+.tree li a:hover, .tree li a:hover + ul li a {
+    background: #e600ff;
+    color: #000000;
+    border: 3px solid #000000;
+}
+
+/*Connector styles on hover*/
+.tree li a:hover + ul li::after,
+.tree li a:hover + ul li::before,
+.tree li a:hover + ul::before,
+.tree li a:hover + ul ul::before {
+    border-color: #000000;
+}
+
+
+
+

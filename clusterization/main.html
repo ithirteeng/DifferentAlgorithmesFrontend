@@ -18,7 +18,7 @@
             </a>
             <nav class="nav">
                 <a class="nav__link" href="../antAlgorithm">Муравьиный алгоритм</a>
-                <a class="nav__link" href="../genAlgorithm/main.html" >Генетический алгоритм</a>
+                <a class="nav__link" href="../genAlgorithm/main.html">Генетический алгоритм</a>
                 <a class="nav__link" href="../A-star/main.html">Алгоритм А*</a>
                 <a class="nav__link" href="../Neural/main.html">Нейронная сеть</a>
                 <a class="nav__link" href="../decisionTree/main.html">Дерево решений</a>
@@ -30,20 +30,16 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-12">
-                <div class="container-canvas" id="container-canvas">
+            <div class="container-canvas" id="container-canvas">
                     <canvas id="canvas_1">Ваш браузер не поддерживает canvas</canvas>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-6 col-md-12 ">
                 <div class="container-settings">
-                    <p class="clustering-title" id="KMeans-title">K means</p>
-                    <div id="KMeans-settings" class="clusteringField-settings">
+                    <p class="algorithm-title" id="KMeans-title">K means</p>
+                    <div id="KMeans-settings" class="algorithm-settings">
                         <button id="Start K-means" class="buttons" onclick="startKMeans()">Start</button>
-                        <button id="showKMeans-settings" class="buttons" onclick="showSettings('KMeans')">Settings
-                        </button>
-                        <div class="clusters-field" id="KMeans-clusters">
-
-                        </div>
+                        <button id="showKMeans-settings" class="buttons" onclick="showSettings('KMeans')">Settings</button>
                         <div class="dropContainer-settings" id="KMeans-Drop-settings">
                             <div class="metricRadioButtons-container">
                                 <div class="closeModel" onclick="showSettings('KMeans')"></div>
@@ -71,8 +67,8 @@
                         </div>
                     </div>
                     <br>
-                    <p class="clustering-title" id="AGNES-title">Agglomerative Nesting</p>
-                    <div id="AGNES-settings" class="clusteringField-settings">
+                    <p class="algorithm-title" id="AGNES-title">Agglomerative Nesting</p>
+                    <div id="AGNES-settings" class="algorithm-settings">
                         <button id="Start AGNES" class="buttons" onclick="startAGNES()">Start</button>
                         <button id="showAGNES-settings" class="buttons" onclick="showSettings('AGNES')">Settings
                         </button>
@@ -119,7 +115,7 @@
                         </div>
                     </div>
                     <br>
-                    <div id="anotherOptions" class="clusteringField-settings">
+                    <div id="anotherOptions" class="algorithm-settings">
                         <button id="clearButton" class="buttons" onclick="clearAll()">Clear</button>
                     </div>
                 </div>
@@ -127,7 +123,6 @@
         </div>
     </div>
 </div>
-
 
 </body>
 </html>

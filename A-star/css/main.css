@@ -6,47 +6,6 @@ body {
     font-size: 30px;
 }
 
-.container {
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sectionSetting {
-    display: flex;
-    border: 3px solid blue;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 50px;
-
-}
-
-.table-container {
-    border: 2px solid red;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 60px;
-    margin-right: 30px;
-    width: 850px;
-    height: 850px;
-    min-height: 840px;
-    min-width: 840px;
-}
-
-.settings-container {
-    display: block;
-    justify-content: center;
-    margin-right: 60px;
-    margin-left: 30px;
-    border: 2px solid red;
-    width: 850px;
-    height: 850px;
-    min-height: 840px;
-    min-width: 840px;
-}
-
 .sizeContainer {
     padding-left: 30px;
     display: flex;
@@ -55,24 +14,21 @@ body {
 
 .rAndsCont {
     font-size: 26px;
-    border: 1px solid black;
-    width: 50%;
 }
 
-.metricsCont {
-    padding-left: 10px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    border: 1px solid black;
-    width: 25%;
+.metricsContainer {
+    border-left: solid black 2px;
+    margin: 0;
+    margin-left: 20px;
+    padding: 0;
+    padding-left: 20px;
     display: flex;
     flex-direction: column;
     font-size: 26px;
 }
-.metricsCont p {
-    margin: 10px;
+.buttonsContainer{
+ border-bottom: 2px solid black;
 }
-
 .metricsCont input[type=range] {
     width: 90%;
 }
@@ -81,77 +37,11 @@ input[type=radio] {
     margin-right: 10px;
 }
 
-button:disabled {
-    cursor: pointer;
-    margin: 20px;
-    height: 50px;
-    width: 150px;
-    font-family: "Comic Sans MS", monospace;
-    font-size: 20px;
-    background: aqua;
-    border-radius: 10px;
-}
-
-.buttonsContainer {
-    margin-top: 30px;
-
-
-}
-
-.buttons {
-    cursor: pointer;
-    margin-left: 30px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    height: 50px;
-    width: 150px;
-    font-family: "Comic Sans MS", monospace;
-    font-size: 20px;
-    background: aqua;
-    border-radius: 10px;
-}
-
-.updateButtonStyle {
-    cursor: pointer;
-    margin: 20px;
-    height: 50px;
-    width: 150px;
-    font-family: "Comic Sans MS", monospace;
-    font-size: 20px;
-    background: aqua;
-    border-radius: 10px;
-}
-
-.updateButtonStyle:hover {
-    background-color: #c500d9;
-}
-
-.beginButtonStyle {
-    cursor: pointer;
-    margin: 20px;
-    height: 50px;
-    width: 150px;
-    font-family: "Comic Sans MS", monospace;
-    font-size: 20px;
-    background: aqua;
-    border-radius: 10px;
-}
-
-.beginButtonStyle:hover {
-    background-color: #c500d9;
-}
-
-.buttons:hover {
-    background-color: #c500d9;
-}
-
 .range {
     margin-left: 30px;
     display: block;
     width: 350px;
 }
-
-
 
 table {
     outline: 5px solid black;
@@ -161,8 +51,11 @@ table {
     padding: 0;
     border-spacing: 0;
     border-collapse: collapse;
+    background: white;
 }
-
+.preferences{
+    display: flex;
+}
 table tr td {
     border: 1px solid black;
 }

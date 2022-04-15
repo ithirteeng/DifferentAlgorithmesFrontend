@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="../src/css/index.css">
-	<link rel="stylesheet" href="css/main.css">
-	<title>Neural</title>
+    <meta charset="UTF-8">
+    <script type="module" src="main.js"></script>
+    <script type="module" src="fifty/fiftyNeural.js"></script>
+    <script type="module" src="fifty/drawMatrixForFifty.js"></script>
+    <link rel="stylesheet" href="../src/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../src/css/index.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Neural</title>
 </head>
 <body>
 <header class="header">
-	<div class="container">
-		<div class="header__inner">
-			<a href="../index.html" title="Вернуться на главную">
-				<div class="header__logo"></div>
-			</a>
-			<nav class="nav">
-				<a class="nav__link" href="../antAlgorithm">Муравьиный алгоритм</a>
-				<a class="nav__link" href="../genAlgorithm/main.html">Генетический алгоритм</a>
-				<a class="nav__link" href="../A-star/main.html">Алгоритм А*</a>
-				<a class="nav__link" href="../clusterization/main.html">Кластеризация</a>
-				<a class="nav__link" href="../decisionTree/main.html">Дерево решений</a>
-			</nav>
-		</div>
-	</div>
+    <div class="container">
+        <div class="header__inner">
+            <a href="../index.html" title="Вернуться на главную">
+                <div class="header__logo"></div>
+            </a>
+            <nav class="nav">
+                <a class="nav__link" href="../antAlgorithm">Муравьиный алгоритм</a>
+                <a class="nav__link" href="../genAlgorithm/main.html">Генетический алгоритм</a>
+                <a class="nav__link" href="../A-star/main.html">Алгоритм А*</a>
+                <a class="nav__link" href="../clusterization/main.html">Кластеризация</a>
+                <a class="nav__link" href="../decisionTree/main.html">Дерево решений</a>
+            </nav>
+        </div>
+    </div>
 </header>
-<div class="sectionSetting">
-	<div class="table-container">
-		<table class="table-matrix">
-			<tbody id="matrix"></tbody>
-		</table>
-	</div>
-	<div class="settings-container">
-		<button id="clearButton">
-			Clear
-		</button>
-		<button id="startButton">
-			Start
-		</button>
-		<br>
-		<button id="fiftyButton">
-			50x50
-		</button>
-		<br>
-		<button id="trainButton" class="invisibleButtonCLass" disabled>
-			Train
-		</button>
-		<button id="nextButton" class="invisibleButtonCLass" disabled>
-			Next
-		</button>
-		<p id="updateNumber" class="neuronNumber">Your number is </p>
-		<br>
-		<p id="trainNumber"></p>
-	</div>
+<div class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="table-container">
+                    <table class="table-matrix">
+                        <tbody id="matrix"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="container-settings">
+                    <div class="buttonsBlock">
+                        <button id="clearButton" class="buttons">Clear</button>
+                        <button id="startButton" class="buttons">Start</button>
+                        <button id="fiftyButton" class="buttons">50x50</button>
+                    </div>
+                    <div class="invisibleBlock">
+                        <button id="trainButton" class="invisibleButtons" id="invisibleButton1" disabled>Train</button>
+                        <button id="nextButton" class="invisibleButtons" id="invisibleButton2" disabled>Next</button>
+                        <p id="updateNumber" class="neuronNumber">Your number is </p>
+                        <br>
+                        <p id="trainNumber"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<script type="module" src="main.js"></script>
-
-<script type="module" src="fifty/fiftyNeural.js"></script>
-<script type="module" src="fifty/drawMatrixForFifty.js"></script>
 </body>
 </html>

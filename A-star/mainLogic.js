@@ -16,9 +16,7 @@ let isStartButtonPressed = false;
 let isFinisButtonPressed = false;
 let lastButton = "";
 let metrics = "Euclidean";
-
 let isMouseDown = false;
-
 let delay = 30;
 
 function playMusic() {
@@ -138,7 +136,6 @@ function createTableMatrix() {
             element.name = "cell";
             element.dataset.row = i.toString();
             element.dataset.col = j.toString();
-
             element.addEventListener("mousedown", function () {
                 isMouseDown = true;
                 pressOneCellEvent(element);
@@ -148,9 +145,6 @@ function createTableMatrix() {
                     pressOneCellEvent(element);
                 }
             })
-
-            element.addEventListener("mousedown", pressOneCellEvent);
-
             row.append(element);
 
         }
@@ -300,7 +294,6 @@ function pressOneCellEvent(target) {
                     cords[row][col] = 0;
                     aStarMatrix[row][col].value = 0;
                 } else {
-                    isMouseDown = false;
                     alert("Yo can't do it!");
                 }
                 break;
@@ -312,7 +305,6 @@ function pressOneCellEvent(target) {
                     cords[row][col] = 1;
                     aStarMatrix[row][col].value = 1;
                 } else {
-                    isMouseDown = false;
                     alert("You can't do it!");
                 }
                 break;
@@ -324,11 +316,11 @@ function changeButtonsEnabling(mode) {
     let buttons = document.querySelectorAll("button")
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].disabled = !!mode;
-
     }
+    lastButton = "";
     let ranges = document.querySelectorAll("input")
     for (let i = 0; i < ranges.length; i++) {
-        if (ranges[i].id != "speedRange") {
+        if (ranges[i].id !== "speedRange") {
             ranges[i].disabled = !!mode;
         }
     }

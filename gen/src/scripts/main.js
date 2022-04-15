@@ -255,6 +255,7 @@ class GeneticAlgorithm {
                 this.bestEver = this.population[0];
                 this.bestDistance = bestPopulationDistance;
                 await (10)
+
                 canvas.clearField();
                 canvas.drawWay(this.bestEver, 'brown')
                 canvas.restorePoints(dataArray);
@@ -388,4 +389,5 @@ let mutationType = "random"
 let mutation_rate = 0.2;
 let population_length = 20;
 let generation_number = 20;
+
 

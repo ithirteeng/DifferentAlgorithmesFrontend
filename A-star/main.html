@@ -3,15 +3,27 @@
 <head>
 	<meta charset="UTF-8">
 	<title>A-STAR ALGORITHM</title>
-	<link href="css/mainStyle.css" rel="stylesheet">
+	<link rel="stylesheet" href="../src/css/index.css">
+	<link href="css/main.css" rel="stylesheet">
 </head>
 <body>
-<header>
+<header class="header">
 	<div class="container">
-		A-star algorithm:
+		<div class="header__inner">
+			<a href="../index.html" title="Вернуться на главную">
+				<div class="header__logo"></div>
+			</a>
+			<nav class="nav">
+				<a class="nav__link" href="../antAlgorithm">Муравьиный алгоритм</a>
+				<a class="nav__link" href="../genAlgorithm/main.html">Генетический алгоритм</a>
+				<a class="nav__link" href="../A-star/main.html">Алгоритм А*</a>
+				<a class="nav__link" href="../clusterization/main.html">Кластеризация</a>
+				<a class="nav__link" href="../decisionTree/main.html">Дерево решений</a>
+			</nav>
+		</div>
 	</div>
 </header>
-<section class="sectionSetting">
+<div class="sectionSetting">
 	<div class="table-container">
 		<table class="table-matrix">
 			<tbody id="matrix"></tbody>
@@ -76,7 +88,7 @@
 			</div>
 		</div>
 	</div>
-</section>
+</div>
 <script type="module" src="mainLogic.js"></script>
 </body>
 </html>

@@ -119,7 +119,8 @@ class GeneticAlgorithm {
         // shuffling array of numbers to create population with (population_length) individuals
 
         this.population = [];
-        for (let i = 0; i < population_length; i++) {
+        this.population.push(this.first_chromosome)
+        for (let i = 0; i < population_length -1; i++) {
             let new_chromosome = this.shuffle(this.first_chromosome);
             this.population.push(new_chromosome);
         }
@@ -239,7 +240,7 @@ class GeneticAlgorithm {
         this.population = populationTemp.slice(0, population_length)
     }
 
-    algorithm() {
+    async algorithm() {
         canvas.drawWay(this.first_chromosome, 'brown')
         let currentGeneration = 1;
         let conditionToStop = (currentGeneration) => { // тут можно добавить различных условий, помимо текущего поколения
@@ -253,6 +254,8 @@ class GeneticAlgorithm {
             if (bestPopulationDistance < this.bestDistance) {
                 this.bestEver = this.population[0];
                 this.bestDistance = bestPopulationDistance;
+                await (10)
+
                 canvas.clearField();
                 canvas.drawWay(this.bestEver, 'brown')
                 canvas.restorePoints(dataArray);
@@ -353,6 +356,14 @@ function clearAll() {
     document.getElementById('Start').textContent = "Start"
     is_started = false;
 }
+function showSettings(id) {
+    let block = document.getElementById(`${id}-Drop-settings`)
+    if (block.style.display === "block") {
+        block.style.display = "none";
+    } else {
+        block.style.display = "block";
+    }
+}
 
 let canvas = new Canvas('canvas_1', 'canvas');
 canvas.canvas.addEventListener('mousedown', function (event) {
@@ -378,4 +389,5 @@ let mutationType = "random"
 let mutation_rate = 0.2;
 let population_length = 20;
 let generation_number = 20;
+
 

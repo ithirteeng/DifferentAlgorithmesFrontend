@@ -13,6 +13,7 @@ body {
 *,
 *:before,
 *:after {
+    font-family: "Comic Sans MS", monospace;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
@@ -117,6 +118,41 @@ body {
     justify-content: center;
     align-items: center;
 
+}
+
+.setting-title{
+    text-align: center;
+    margin-bottom: 0;
+}
+.headerSETTINGS{
+    text-align: center;
+    margin-top: 0;
+}
+.dropContainer-settings{
+    position: fixed;
+    margin: auto;
+    display: none;
+    padding: 1vh;
+    border: #343a40 solid ;
+    border-radius: 20px;
+    background: #dee2e6;
+    color: black;
+}
+.closeModel {
+    margin: 0;
+    position: relative;
+    top: 0;
+    left: 71vh;
+    width: 2em;
+    height: 2em;
+    background-color: red;
+    cursor: pointer;
+    transition: opacity ease 0.5s;
+    opacity: 0.4;
+    clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
+}
+.closeModel:hover{
+    opacity: 1;
 }
 
 /*.sectionSetting {*/

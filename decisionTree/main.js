@@ -2,6 +2,7 @@ let isFileChosen = false;
 let isBuilt = false;
 let data;
 let tree = new Tree(new Node());
+let isGachi = false;
 
 inputFileEvent();
 buildTreeEvent();
@@ -42,6 +43,9 @@ function inputFileEvent() {
     if (!isBuilt) {
         input.onchange = function () {
             document.getElementById("fileName").textContent = this.files.item(0).name;
+            if (this.files.item(0).name === "gachiData.csv") {
+                isGachi = true;
+            }
             isFileChosen = true;
             disableInput(true);
         }
@@ -111,6 +115,7 @@ function clearAllEvent() {
         for (let i = 0; i < temp.length; i++) {
             temp[i].classList.remove("path");
         }
+        isGachi = false;
         isBuilt = false;
         data = undefined;
         let root = document.getElementById("treeStart");
@@ -238,6 +243,27 @@ async function drawPath(path) {
             node.htmlElement.classList.remove("path");
         }
     }
+    if (isGachi) {
+        if (path[path.length - 1].name === "fucking slaves") {
+            gachiSounds("fucking slaves");
+        } else {
+            gachiSounds("300 bucks")
+        }
+    }
     document.getElementById("result").textContent = path[path.length - 1].name;
     makeButtonsDisabled(false);
+}
+
+function gachiSounds(name) {
+    let music = document.createElement("audio");
+    if (name === "fucking slaves") {
+        music.src = "./music/fuckingSlavesSound.mp3";
+    } else {
+        music.src = "./music/threeHundredBucksSound.mp3";
+    }
+    music.autoplay = true;
+}
+
+function playMusic() {
+
 }

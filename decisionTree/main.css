@@ -65,11 +65,19 @@ body {
     opacity: 0;
     visibility: hidden;
     position: absolute;
+    width: 0px;
+}
+
+.chooseFileContainer {
+    width: 100%;
+    display: flex;
 }
 
 .fileWrapper {
+    margin-top: 3px;
     margin-bottom: 20px;
-    width: 100%;
+    margin-right: 25px;
+    width: 35%;
     height: 50px;
     border-radius: 10px;
     text-align: center;
@@ -99,10 +107,9 @@ body {
     padding-right: 10px;
     font-weight: normal;
     border: 3px solid black;
-    margin-right: 20px;
     cursor: pointer;
     height: 50px;
-    width: 35%;
+    width: 100%;
     font-family: "Comic Sans MS", monospace;
     display: flex;
     align-items: center;

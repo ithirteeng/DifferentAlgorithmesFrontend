@@ -264,6 +264,3 @@ function gachiSounds(name) {
     music.autoplay = true;
 }
 
-function playMusic() {
-
-}

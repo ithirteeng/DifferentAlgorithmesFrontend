@@ -127,7 +127,7 @@ function clearAllEvent() {
     });
 }
 
-async function findPathEvent() {
+function findPathEvent() {
     document.getElementById("showResultButton").addEventListener("click", async function () {
         if (isBuilt) {
             let temp = document.querySelectorAll("a");

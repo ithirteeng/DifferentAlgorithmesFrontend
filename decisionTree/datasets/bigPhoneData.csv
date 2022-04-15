@@ -1,17 +1,17 @@
-usd;lamphat;nctt;slkt;play
-TANG;GIAM;THAP;TB;THAP
-TANG;TANG;THAP;TB;CAO
-TANG;ON DINH;CAO;TB;CAO
-TANG;TANG;THAP;THAP;CAO
-TANG;GIAM;TB;THAP;CAO
-TANG;GIAM;CAO;THAP;THAP
-TB;ON DINH;TB;CAO;THAP
-TB;GIAM;THAP;CAO;THAP
-TB;TANG;TB;THAP;THAP
-TB;ON DINH;CAO;TB;CAO
-TB;GIAM;CAO;CAO;CAO
-GIAM;ON DINH;CAO;THAP;THAP
-GIAM;GIAM;CAO;CAO;CAO
-GIAM;TANG;CAO;TB;THAP
-GIAM;TANG;THAP;THAP;THAP
-GIAM;ON DINH;CAO;TB;CAO
+charger;OS;Screen;OSU;type
+micro-USB;Android;FullHD;8gb;shit
+micro-USB;IOS;FullHD;8gb;candy
+micro-USB;Harmony os;4k;8gb;candy
+micro-USB;IOS;FullHD;4gb;candy
+micro-USB;Android;2k;4gb;candy
+micro-USB;Android;4k;4gb;shit
+wireless;Harmony os;2k;2gb;shit
+wireless;Android;FullHD;2gb;shit
+wireless;IOS;2k;4gb;shit
+wireless;Harmony os;4k;8gb;candy
+wireless;Android;4k;2gb;candy
+type-C;Harmony os;4k;4gb;shit
+type-C;Android;4k;2gb;candy
+type-C;IOS;4k;8gb;shit
+type-C;IOS;FullHD;4gb;shit
+type-C;Harmony os;4k;8gb;candy

@@ -264,12 +264,12 @@ async function drawPath(path) {
 }
 
 function gachiSounds(name) {
-    let music = document.createElement("audio");
+    let  audioM = document.createElement("audio");
     if (name === "fucking slaves") {
-        music.src = "./music/fuckingSlavesSound.mp3";
+        audioM.src = "./music/fuckingSlavesSound.mp3";
     } else {
-        music.src = "./music/threeHundredBucksSound.mp3";
+        audioM.src = "./music/threeHundredBucksSound.mp3";
     }
-    music.autoplay = true;
+    audioM.autoplay = true;
 }
 

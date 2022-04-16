@@ -3,9 +3,7 @@ import {correctFiftyBias} from "../src/fiftyBiasFile.js";
 import {weightsBruh} from "../src/weigthsForFifty.js";
 
 export function fiftyMain() {
-
     let matrixSize = 50;
-
     let vectorSize = []
     let inputVectorSize = matrixSize * matrixSize;
     let hiddenVectorSize = 150;

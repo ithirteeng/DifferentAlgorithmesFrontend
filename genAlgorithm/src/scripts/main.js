@@ -1,3 +1,10 @@
+alert("Настройте громкость звука");
+playMusic();
+function playMusic() {
+    let music = document.createElement("audio");
+    music.src = "./src/music/geneticMusic.m4a";
+    music.autoplay = true;
+}
 class Canvas {
     // Class for my own canvas field with methods and so on
     constructor(canvas_id, container_id) {
@@ -26,7 +33,6 @@ class Canvas {
         this.canvas.height = this.container.offsetHeight;
         this.width = this.context.canvas.width;
         this.height = this.context.canvas.height;
-        console.log(`CANVAS PROPERTIES\n    Width: ${canvas.width}\n    Height: ${canvas.height}`)
     }
 
     drawCirclePoint(point, color) {
@@ -70,7 +76,7 @@ class GeneticAlgorithm {
         this.distancesBtwGens = [[/*variable for matrix of distances between gens*/]];
         checkRadioButtons("metric");
         this.createMatrixOfDistances(metricTypes[distanceMetric]);
-        console.log(metricTypes[distanceMetric])
+
         this.population = [[/*variable for array of population arrays*/]]
         this.createFirstPopulation();
         this.algorithm();
@@ -301,13 +307,13 @@ function inputRange(id) {
             mutation_rate = parseInt(rng.value) / 100;
             break;
     }
-    console.log(`Изменен ${id} range`);
+
 }
 
 function checkPoints() {
     // if CanvasField is clear raises alert
     if (dataArray.length === 0) {
-        console.log("Точек нет!");
+
         alert("Поставьте точки!");
         return true;
     }
@@ -340,9 +346,9 @@ function startGenAlgorithm() {
     if (is_started) {
         canvas.clearField();
         canvas.restorePoints(dataArray);
-        console.log("Restart GA");
+
     } else {
-        console.log("Start Genetic algorithm");
+
         is_started = true;
     }
     let solve = new GeneticAlgorithm(dataArray, generation_number);
@@ -350,7 +356,6 @@ function startGenAlgorithm() {
 
 function clearAll() {
     // Clears canvas and data. Creates standard solve with current amount of clusters
-    console.log('CLEAR ALL!')
     dataArray = [];
     canvas.clearField();
     document.getElementById('Start').textContent = "Start"
@@ -365,7 +370,7 @@ function showSettings(id) {
     }
 }
 
-let canvas = new Canvas('canvas_1', 'canvas');
+let canvas = new Canvas('canvas_1', 'container-canvas');
 canvas.canvas.addEventListener('mousedown', function (event) {
     putPointByClick(event, canvas);
     if (is_started) {

@@ -1,3 +1,13 @@
+alert("Настройте громкость звука");
+playMusic();
+
+function playMusic() {
+    let music = document.createElement("audio");
+    music.src = "./src/music/clustMusic.m4a";
+    music.autoplay = true;
+
+}
+
 class Canvas {
     // Class for my own canvas field with methods and so on
     constructor(canvas_id, container_id) {
@@ -19,7 +29,7 @@ class Canvas {
         this.canvas.height = this.container.offsetHeight;
         this.width = this.context.canvas.width;
         this.height = this.context.canvas.height;
-        console.log(`CANVAS PROPERTIES\n    Width: ${canvas.width}\n    Height: ${canvas.height}`)
+
     }
 
     drawCirclePoint(point, color, startR = 0, endR = 2) {
@@ -51,6 +61,7 @@ class Canvas {
     }
 
 }
+
 
 class KMeans {
     constructor(dataArray) {
@@ -222,6 +233,7 @@ class AGNES {
 
 }
 
+
 function dist_min(arrI, arrJ, distMetric) {
     let min = Infinity;
     for (let i = 0; i < arrI.length; i++) {
@@ -294,13 +306,13 @@ function inputRange(id) {
             clusters_number_AGNES = parseInt(rng.value);
             break;
     }
-    console.log(`Изменен ${id} range`);
+
 }
 
 function checkPoints() {
     // if CanvasField is clear raise alert
     if (dataArray.length === 0) {
-        console.log("Точек нет!");
+
         alert("Поставьте точки!");
         return true;
     }
@@ -328,7 +340,7 @@ function startKMeans() {
             restore();
         }
     }
-    console.log("Старт K-means");
+
     let k_means = new KMeans(dataArray);
     k_means_is_started = true;
 
@@ -345,7 +357,7 @@ function startAGNES() {
             restore();
         }
     }
-    console.log("Старт AGNES");
+
     let agnes = new AGNES(dataArray, dist_min);
     agnes_is_started = true;
 }
@@ -360,7 +372,7 @@ function restore() {
 
 function clearAll() {
     // Clears canvas and data. Creates standard solve with current amount of clusters
-    console.log("CLEEEEEAR!")
+
     dataArray = [];
     canvas.clearField();
     document.getElementById('Start K-means').textContent = "Start"

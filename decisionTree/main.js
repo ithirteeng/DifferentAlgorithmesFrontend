@@ -1,3 +1,12 @@
+alert("Настройте громкость звука")
+playMusic();
+
+function playMusic() {
+    let music = document.createElement("audio");
+    music.src = "./music/decisionTreeMusic.m4a";
+    music.autoplay = true;
+}
+
 let isFileChosen = false;
 let isBuilt = false;
 let data;

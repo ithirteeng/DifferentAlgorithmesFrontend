@@ -1,4 +1,12 @@
 startButtonEvent();
+alert("Настройте громкость!!!!");
+playMusic();
+
+function playMusic() {
+    let music = document.createElement("audio");
+    music.src = "./music/antsMusic.m4a"
+    music.autoplay = true;
+}
 
 class Canvas {
     // Class for my own canvas field with methods and so on
